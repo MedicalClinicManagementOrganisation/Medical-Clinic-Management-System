@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label4 = new Label();
-            textBoxUserId = new TextBox();
             labelTitle = new Label();
             label3 = new Label();
             label2 = new Label();
@@ -48,25 +46,6 @@
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 18.75F, FontStyle.Bold, GraphicsUnit.Point);
-            label4.Location = new Point(780, 382);
-            label4.Name = "label4";
-            label4.Size = new Size(130, 35);
-            label4.TabIndex = 65;
-            label4.Text = "Id of User";
-            // 
-            // textBoxUserId
-            // 
-            textBoxUserId.Font = new Font("Segoe UI", 18.75F, FontStyle.Regular, GraphicsUnit.Point);
-            textBoxUserId.Location = new Point(916, 379);
-            textBoxUserId.Name = "textBoxUserId";
-            textBoxUserId.ReadOnly = true;
-            textBoxUserId.Size = new Size(59, 41);
-            textBoxUserId.TabIndex = 64;
             // 
             // labelTitle
             // 
@@ -240,8 +219,6 @@
             Controls.Add(comboBoxActive);
             Controls.Add(comboBoxRole);
             Controls.Add(buttonChangePassword);
-            Controls.Add(label4);
-            Controls.Add(textBoxUserId);
             Controls.Add(labelTitle);
             Controls.Add(label3);
             Controls.Add(label2);
@@ -259,8 +236,6 @@
         }
 
         #endregion
-        private Label label4;
-        private TextBox textBoxUserId;
         private Label labelTitle;
         private Label label3;
         private Label label2;

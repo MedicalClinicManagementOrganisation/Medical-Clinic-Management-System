@@ -66,23 +66,21 @@ namespace GUI_Management_of_medical_clinic
 
         private void buttonEditOffice_Click(object sender, EventArgs e)
         {
-            
+
             if (OfficeService.CheckIfNumberExists(int.Parse(textBoxNumber.Text)) && office.Number != int.Parse(textBoxNumber.Text)) { MessageBox.Show("The number of room entered is already taken. Please choose a different number.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
 
-            OfficeService.EditOffice(int.Parse(textBoxOfficeId.Text), int.Parse(textBoxNumber.Text), comboBoxActive.SelectedItem == "Active" ? true : false, textBoxInfo.Text, int.Parse(Regex.Match(listBoxSpecializations.SelectedItem.ToString(), @"^\d+").Value));
+            OfficeService.EditOffice(office.IdOffice, int.Parse(textBoxNumber.Text), comboBoxActive.SelectedItem == "Active" ? true : false, textBoxInfo.Text, int.Parse(Regex.Match(listBoxSpecializations.SelectedItem.ToString(), @"^\d+").Value));
 
             MessageBox.Show("Success, data is saved.");
 
             FormOfficeList officeList = new FormOfficeList(currentUser);
             officeList.ShowDialog();
             Close();
-            
+
         }
 
         private void FormOfficeEdit_Load(object sender, EventArgs e)
         {
-            
-            textBoxOfficeId.Text = office.IdOffice.ToString();
             textBoxInfo.Text = office.Info;
             textBoxNumber.Text = office.Number.ToString();
             comboBoxActive.SelectedItem = office.Status ? "Active" : "Non active";
@@ -97,7 +95,7 @@ namespace GUI_Management_of_medical_clinic
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            
+
             if (office.IdSpecialization != int.Parse(Regex.Match(listBoxSpecializations.SelectedItem.ToString(), @"^\d+").Value) || !comboBoxActive.SelectedItem.Equals(office.Status ? "Active" : "Non active") || !textBoxInfo.Text.Equals(office.Info) || office.Number != int.Parse(textBoxNumber.Text))
             {
                 DialogResult result = MessageBox.Show("Are you sure you want to cancel the operation? ", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);

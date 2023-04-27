@@ -76,12 +76,16 @@ namespace GUI_Management_of_medical_clinic
 
         private void buttonRemoveOffice_Click(object sender, EventArgs e)
         {
-            
-            //There will be checking statement if this room reserved for the future or not
-
-            FormDeletingConfirmation delete = new FormDeletingConfirmation(OfficeService.GetOfficeById((int)dataGridViewOffices.CurrentRow.Cells[0].Value));
-            delete.ShowDialog();
-            LoadOfficeData();
+            if (!OfficeService.CheckIfOfficeIsAppointed((int)dataGridViewOffices.CurrentRow.Cells[0].Value))
+            {
+                FormDeletingConfirmation delete = new FormDeletingConfirmation(OfficeService.GetOfficeById((int)dataGridViewOffices.CurrentRow.Cells[0].Value));
+                delete.ShowDialog();
+                LoadOfficeData();
+            }
+            else
+            {
+                MessageBox.Show("This office has been appointed and therefore cannot be deleted. Please refrain from attempting to delete this office as it is integral to our operations. Thank you for your cooperation.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
     }
 }

@@ -35,7 +35,6 @@ namespace GUI_Management_of_medical_clinic
 
         private void FormUserEdit_Load(object sender, EventArgs e)
         {
-            textBoxUserId.Text = user.IdUser.ToString();
             textBoxUsername.Text = user.Username;
             comboBoxRole.SelectedItem = user.Role.ToString();
             comboBoxActive.SelectedItem = user.IsActive ? "Active" : "Disactive";
@@ -66,7 +65,7 @@ namespace GUI_Management_of_medical_clinic
 
         private void buttonSaveUser_Click(object sender, EventArgs e)
         {
-            UserService.EditUser(int.Parse(textBoxUserId.Text), textBoxUsername.Text, (EnumUserRoles)Enum.Parse(typeof(EnumUserRoles), comboBoxRole.SelectedItem.ToString()), comboBoxActive.SelectedItem == "Active" ? true : false, int.Parse(Regex.Match(listBoxEmployees.SelectedItem.ToString(), @"^\d+").Value));
+            UserService.EditUser(user.IdUser, textBoxUsername.Text, (EnumUserRoles)Enum.Parse(typeof(EnumUserRoles), comboBoxRole.SelectedItem.ToString()), comboBoxActive.SelectedItem == "Active" ? true : false, int.Parse(Regex.Match(listBoxEmployees.SelectedItem.ToString(), @"^\d+").Value));
 
             MessageBox.Show("Success, data is saved.");
 

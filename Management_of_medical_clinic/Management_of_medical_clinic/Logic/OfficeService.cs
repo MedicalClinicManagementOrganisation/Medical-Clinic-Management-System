@@ -64,6 +64,20 @@ namespace Console_Management_of_medical_clinic.Logic
                 context.SaveChanges();
             }
         }
-     
+
+        public static bool CheckIfOfficeIsAppointed(int id)
+        {
+            if (id >= 0)
+            {
+                using (AppDbContext context = new AppDbContext())
+                {
+                    if (context.DbAppointments.Any(a => a.IdOffice == id))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 }

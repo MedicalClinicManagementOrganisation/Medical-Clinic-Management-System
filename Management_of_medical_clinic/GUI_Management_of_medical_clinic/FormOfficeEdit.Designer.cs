@@ -41,8 +41,6 @@
             label3 = new Label();
             comboBoxActive = new ComboBox();
             label1 = new Label();
-            textBoxOfficeId = new TextBox();
-            label5 = new Label();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
@@ -184,33 +182,12 @@
             label1.TabIndex = 71;
             label1.Text = "Status";
             // 
-            // textBoxOfficeId
-            // 
-            textBoxOfficeId.Font = new Font("Segoe UI", 18.75F, FontStyle.Regular, GraphicsUnit.Point);
-            textBoxOfficeId.Location = new Point(966, 399);
-            textBoxOfficeId.Name = "textBoxOfficeId";
-            textBoxOfficeId.ReadOnly = true;
-            textBoxOfficeId.Size = new Size(59, 41);
-            textBoxOfficeId.TabIndex = 78;
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI", 18.75F, FontStyle.Bold, GraphicsUnit.Point);
-            label5.Location = new Point(811, 402);
-            label5.Name = "label5";
-            label5.Size = new Size(149, 35);
-            label5.TabIndex = 79;
-            label5.Text = "Id of Office";
-            // 
             // FormOfficeEdit
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Info;
             ClientSize = new Size(1920, 1080);
-            Controls.Add(label5);
-            Controls.Add(textBoxOfficeId);
             Controls.Add(comboBoxActive);
             Controls.Add(label1);
             Controls.Add(labelTitle);
@@ -249,7 +226,5 @@
         private Label label3;
         private ComboBox comboBoxActive;
         private Label label1;
-        private TextBox textBoxOfficeId;
-        private Label label5;
     }
 }
