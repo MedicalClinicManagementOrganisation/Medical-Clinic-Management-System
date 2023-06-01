@@ -10,6 +10,7 @@ namespace Console_Management_of_medical_clinic.Logic
 {
     public class CalendarAppointmentService
     {
+        //public static Patient GetPatientDataByIdPatient(AppointmentModel appointment)?
         public static Patient GetPatientDataByIdPatient(DoctorsDayPlanModel appointment)
         {
             Patient? result = null;
@@ -46,6 +47,22 @@ namespace Console_Management_of_medical_clinic.Logic
             foreach (DoctorsDayPlanModel appointment in appointments)
             {
                 if (appointment.PatientId != null)
+                {
+                    result.Add(appointment);
+                }
+            }
+
+            return result;
+        }
+
+        public static List<DoctorsDayPlanModel> GetScheduledAppointments()
+        {
+            List<DoctorsDayPlanModel> appointments = GetAppointmentsData();
+            List<DoctorsDayPlanModel> result = new List<DoctorsDayPlanModel>();
+
+            foreach (DoctorsDayPlanModel appointment in appointments)
+            {
+                if (appointment.Status == Data.Enums.EnumAppointmentStatus.Scheduled)
                 {
                     result.Add(appointment);
                 }
@@ -134,6 +151,11 @@ namespace Console_Management_of_medical_clinic.Logic
         public static List<DoctorsDayPlanModel> SortByTerm(List<DoctorsDayPlanModel> appointments)
         {
             return appointments.OrderBy(a => a.IdOfTerm).ToList();
+        }
+
+        public static List<DoctorsDayPlanModel> SortByPatientLastName(List<DoctorsDayPlanModel> appointments) //finish
+        {
+            return appointments.OrderBy(a => PatientService.GetPatientById((int)a.PatientId).LastName).ToList();
         }
     }
 }

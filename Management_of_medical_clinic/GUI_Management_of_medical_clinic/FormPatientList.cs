@@ -91,7 +91,7 @@ namespace GUI_Management_of_medical_clinic
         {
             Patient patient = Patient.FindPatient((int)dataGridViewPatientList.SelectedRows[0].Cells[0].Value);
             List<DoctorsDayPlanModel> doctorsDayPlanModels = CalendarAppointmentService.GetAppointmentsWithPatients();
-            
+
             foreach (DoctorsDayPlanModel doctorsDayPlanModel in doctorsDayPlanModels)
             {
                 DateTime date = CalendarService.GetDateByIdCalendar((int)doctorsDayPlanModel.IdCalendar, doctorsDayPlanModel.IdDay);
@@ -120,7 +120,7 @@ namespace GUI_Management_of_medical_clinic
             {
                 return;
             }
-            
+
             Patient patient = new Patient();
             patient = Patient.FindPatient((int)dataGridViewPatientList.SelectedRows[0].Cells[0].Value);
 
@@ -216,6 +216,16 @@ namespace GUI_Management_of_medical_clinic
             Hide();
             formCalendarAppointment.ShowDialog();
             Close();
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

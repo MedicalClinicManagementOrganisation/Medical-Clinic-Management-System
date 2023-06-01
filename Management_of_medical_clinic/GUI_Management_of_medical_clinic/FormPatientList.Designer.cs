@@ -120,6 +120,7 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(357, 1080);
             panel1.TabIndex = 29;
+            panel1.Paint += panel1_Paint;
             // 
             // buttonViewAppointments
             // 
@@ -295,7 +296,6 @@
             dataGridViewPatientList.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridViewPatientList.Size = new Size(1567, 1060);
             dataGridViewPatientList.TabIndex = 30;
-            //dataGridViewPatientList.CellContentClick += dataGridViewPatientList_CellContentClick;
             // 
             // panel2
             // 
@@ -316,6 +316,7 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(1567, 77);
             panel2.TabIndex = 31;
+            panel2.Paint += panel2_Paint;
             // 
             // buttonClearFilters
             // 

@@ -1,6 +1,6 @@
 ﻿namespace GUI_Management_of_medical_clinic
 {
-    partial class FormListAppointment
+    partial class FormDoctorAppointmentList
     {
         /// <summary>
         /// Required designer variable.
@@ -31,30 +31,26 @@
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             buttonClearFilter = new Button();
             panel1 = new Panel();
-            buttonRescheduleAppointment = new Button();
-            button_Clear = new Button();
             buttonRemove = new Button();
             buttonShowDetails = new Button();
             buttonExit = new Button();
             pictureBox1 = new PictureBox();
             dataGridViewAppointmentList = new DataGridView();
+            Column1 = new DataGridViewTextBoxColumn();
             ColumnPatient = new DataGridViewTextBoxColumn();
+            Columnfirstname = new DataGridViewTextBoxColumn();
             ColumnPESEL = new DataGridViewTextBoxColumn();
-            ColumnDoctor = new DataGridViewTextBoxColumn();
-            ColumnSpecialization = new DataGridViewTextBoxColumn();
             ColumnDate = new DataGridViewTextBoxColumn();
             ColumnHour = new DataGridViewTextBoxColumn();
             ColumnOffice = new DataGridViewTextBoxColumn();
             ColumnCost = new DataGridViewTextBoxColumn();
             panel2 = new Panel();
+            pictureBox5 = new PictureBox();
+            pictureBox4 = new PictureBox();
             checkBoxDateOfVisit = new CheckBox();
             maskedTextBoxPESEL = new MaskedTextBox();
             buttonClearFiltr = new Button();
             buttonAddFiltr = new Button();
-            comboBoxSelectDoctorOrPatient = new ComboBox();
-            label6 = new Label();
-            comboBoxDoctorSpecialization = new ComboBox();
-            label5 = new Label();
             dateTimePickerDateOfVisit = new DateTimePicker();
             label3 = new Label();
             label2 = new Label();
@@ -65,6 +61,8 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewAppointmentList).BeginInit();
             panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             SuspendLayout();
             // 
             // buttonClearFilter
@@ -80,8 +78,6 @@
             // panel1
             // 
             panel1.BackColor = Color.SteelBlue;
-            panel1.Controls.Add(buttonRescheduleAppointment);
-            panel1.Controls.Add(button_Clear);
             panel1.Controls.Add(buttonRemove);
             panel1.Controls.Add(buttonShowDetails);
             panel1.Controls.Add(buttonExit);
@@ -91,36 +87,6 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(357, 1080);
             panel1.TabIndex = 29;
-            // 
-            // buttonRescheduleAppointment
-            // 
-            buttonRescheduleAppointment.BackColor = Color.SteelBlue;
-            buttonRescheduleAppointment.FlatAppearance.BorderColor = Color.Black;
-            buttonRescheduleAppointment.FlatStyle = FlatStyle.Flat;
-            buttonRescheduleAppointment.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point);
-            buttonRescheduleAppointment.Location = new Point(-2, 493);
-            buttonRescheduleAppointment.Margin = new Padding(3, 4, 3, 4);
-            buttonRescheduleAppointment.Name = "buttonRescheduleAppointment";
-            buttonRescheduleAppointment.Size = new Size(360, 65);
-            buttonRescheduleAppointment.TabIndex = 50;
-            buttonRescheduleAppointment.Text = "Reschedule appointment";
-            buttonRescheduleAppointment.UseVisualStyleBackColor = false;
-            buttonRescheduleAppointment.Click += buttonRescheduleAppointment_Click;
-            // 
-            // button_Clear
-            // 
-            button_Clear.BackColor = Color.SteelBlue;
-            button_Clear.FlatAppearance.BorderColor = Color.Black;
-            button_Clear.FlatStyle = FlatStyle.Flat;
-            button_Clear.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point);
-            button_Clear.Location = new Point(-1, 419);
-            button_Clear.Margin = new Padding(3, 4, 3, 4);
-            button_Clear.Name = "button_Clear";
-            button_Clear.Size = new Size(360, 65);
-            button_Clear.TabIndex = 49;
-            button_Clear.Text = "Clear the calendars";
-            button_Clear.UseVisualStyleBackColor = false;
-            button_Clear.Click += button_Clear_Click;
             // 
             // buttonRemove
             // 
@@ -148,7 +114,7 @@
             buttonShowDetails.Name = "buttonShowDetails";
             buttonShowDetails.Size = new Size(360, 65);
             buttonShowDetails.TabIndex = 47;
-            buttonShowDetails.Text = "Show details";
+            buttonShowDetails.Text = "[Show details]";
             buttonShowDetails.UseVisualStyleBackColor = false;
             buttonShowDetails.Click += buttonShowDetails_Click;
             // 
@@ -193,7 +159,7 @@
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dataGridViewAppointmentList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dataGridViewAppointmentList.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewAppointmentList.Columns.AddRange(new DataGridViewColumn[] { ColumnPatient, ColumnPESEL, ColumnDoctor, ColumnSpecialization, ColumnDate, ColumnHour, ColumnOffice, ColumnCost });
+            dataGridViewAppointmentList.Columns.AddRange(new DataGridViewColumn[] { Column1, ColumnPatient, Columnfirstname, ColumnPESEL, ColumnDate, ColumnHour, ColumnOffice, ColumnCost });
             dataGridViewAppointmentList.Location = new Point(357, 84);
             dataGridViewAppointmentList.MultiSelect = false;
             dataGridViewAppointmentList.Name = "dataGridViewAppointmentList";
@@ -205,29 +171,30 @@
             dataGridViewAppointmentList.Size = new Size(1564, 1053);
             dataGridViewAppointmentList.TabIndex = 30;
             // 
+            // Column1
+            // 
+            Column1.HeaderText = "IdVisit";
+            Column1.Name = "Column1";
+            Column1.ReadOnly = true;
+            Column1.Visible = false;
+            // 
             // ColumnPatient
             // 
-            ColumnPatient.HeaderText = "Patient";
+            ColumnPatient.HeaderText = "Last name";
             ColumnPatient.Name = "ColumnPatient";
             ColumnPatient.ReadOnly = true;
+            // 
+            // Columnfirstname
+            // 
+            Columnfirstname.HeaderText = "First Name";
+            Columnfirstname.Name = "Columnfirstname";
+            Columnfirstname.ReadOnly = true;
             // 
             // ColumnPESEL
             // 
             ColumnPESEL.HeaderText = "PESEL";
             ColumnPESEL.Name = "ColumnPESEL";
             ColumnPESEL.ReadOnly = true;
-            // 
-            // ColumnDoctor
-            // 
-            ColumnDoctor.HeaderText = "Doctor";
-            ColumnDoctor.Name = "ColumnDoctor";
-            ColumnDoctor.ReadOnly = true;
-            // 
-            // ColumnSpecialization
-            // 
-            ColumnSpecialization.HeaderText = "Specialization";
-            ColumnSpecialization.Name = "ColumnSpecialization";
-            ColumnSpecialization.ReadOnly = true;
             // 
             // ColumnDate
             // 
@@ -256,14 +223,12 @@
             // panel2
             // 
             panel2.BackColor = Color.SteelBlue;
+            panel2.Controls.Add(pictureBox5);
+            panel2.Controls.Add(pictureBox4);
             panel2.Controls.Add(checkBoxDateOfVisit);
             panel2.Controls.Add(maskedTextBoxPESEL);
             panel2.Controls.Add(buttonClearFiltr);
             panel2.Controls.Add(buttonAddFiltr);
-            panel2.Controls.Add(comboBoxSelectDoctorOrPatient);
-            panel2.Controls.Add(label6);
-            panel2.Controls.Add(comboBoxDoctorSpecialization);
-            panel2.Controls.Add(label5);
             panel2.Controls.Add(dateTimePickerDateOfVisit);
             panel2.Controls.Add(label3);
             panel2.Controls.Add(label2);
@@ -275,10 +240,32 @@
             panel2.Size = new Size(1567, 212);
             panel2.TabIndex = 31;
             // 
+            // pictureBox5
+            // 
+            pictureBox5.Image = Properties.Resources.sort;
+            pictureBox5.Location = new Point(249, 21);
+            pictureBox5.Name = "pictureBox5";
+            pictureBox5.Size = new Size(38, 35);
+            pictureBox5.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox5.TabIndex = 47;
+            pictureBox5.TabStop = false;
+            pictureBox5.Click += pictureBox5_Click;
+            // 
+            // pictureBox4
+            // 
+            pictureBox4.Image = Properties.Resources.sort__1_;
+            pictureBox4.Location = new Point(202, 20);
+            pictureBox4.Name = "pictureBox4";
+            pictureBox4.Size = new Size(41, 36);
+            pictureBox4.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox4.TabIndex = 46;
+            pictureBox4.TabStop = false;
+            pictureBox4.Click += pictureBox4_Click;
+            // 
             // checkBoxDateOfVisit
             // 
             checkBoxDateOfVisit.AutoSize = true;
-            checkBoxDateOfVisit.Location = new Point(867, 11);
+            checkBoxDateOfVisit.Location = new Point(710, 8);
             checkBoxDateOfVisit.Name = "checkBoxDateOfVisit";
             checkBoxDateOfVisit.Size = new Size(88, 19);
             checkBoxDateOfVisit.TabIndex = 15;
@@ -287,7 +274,7 @@
             // 
             // maskedTextBoxPESEL
             // 
-            maskedTextBoxPESEL.Location = new Point(660, 34);
+            maskedTextBoxPESEL.Location = new Point(508, 31);
             maskedTextBoxPESEL.Mask = "00000000000";
             maskedTextBoxPESEL.Name = "maskedTextBoxPESEL";
             maskedTextBoxPESEL.Size = new Size(178, 23);
@@ -296,7 +283,7 @@
             // 
             // buttonClearFiltr
             // 
-            buttonClearFiltr.Location = new Point(1384, 33);
+            buttonClearFiltr.Location = new Point(1153, 30);
             buttonClearFiltr.Name = "buttonClearFiltr";
             buttonClearFiltr.Size = new Size(117, 23);
             buttonClearFiltr.TabIndex = 13;
@@ -306,7 +293,7 @@
             // 
             // buttonAddFiltr
             // 
-            buttonAddFiltr.Location = new Point(1275, 33);
+            buttonAddFiltr.Location = new Point(1044, 30);
             buttonAddFiltr.Name = "buttonAddFiltr";
             buttonAddFiltr.Size = new Size(103, 23);
             buttonAddFiltr.TabIndex = 12;
@@ -314,45 +301,10 @@
             buttonAddFiltr.UseVisualStyleBackColor = true;
             buttonAddFiltr.Click += buttonAddFiltr_Click;
             // 
-            // comboBoxSelectDoctorOrPatient
-            // 
-            comboBoxSelectDoctorOrPatient.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxSelectDoctorOrPatient.Location = new Point(39, 36);
-            comboBoxSelectDoctorOrPatient.Name = "comboBoxSelectDoctorOrPatient";
-            comboBoxSelectDoctorOrPatient.Size = new Size(178, 23);
-            comboBoxSelectDoctorOrPatient.TabIndex = 11;
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Location = new Point(39, 15);
-            label6.Name = "label6";
-            label6.Size = new Size(147, 15);
-            label6.TabIndex = 10;
-            label6.Text = "Filtr name or last name by:";
-            // 
-            // comboBoxDoctorSpecialization
-            // 
-            comboBoxDoctorSpecialization.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxDoctorSpecialization.FormattingEnabled = true;
-            comboBoxDoctorSpecialization.Location = new Point(1074, 33);
-            comboBoxDoctorSpecialization.Name = "comboBoxDoctorSpecialization";
-            comboBoxDoctorSpecialization.Size = new Size(178, 23);
-            comboBoxDoctorSpecialization.TabIndex = 9;
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new Point(1074, 12);
-            label5.Name = "label5";
-            label5.Size = new Size(117, 15);
-            label5.TabIndex = 8;
-            label5.Text = "Doctor specialization";
-            // 
             // dateTimePickerDateOfVisit
             // 
             dateTimePickerDateOfVisit.Format = DateTimePickerFormat.Short;
-            dateTimePickerDateOfVisit.Location = new Point(867, 33);
+            dateTimePickerDateOfVisit.Location = new Point(710, 30);
             dateTimePickerDateOfVisit.Name = "dateTimePickerDateOfVisit";
             dateTimePickerDateOfVisit.Size = new Size(178, 23);
             dateTimePickerDateOfVisit.TabIndex = 6;
@@ -361,7 +313,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(660, 12);
+            label3.Location = new Point(508, 9);
             label3.Name = "label3";
             label3.Size = new Size(38, 15);
             label3.TabIndex = 5;
@@ -370,7 +322,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(246, 15);
+            label2.Location = new Point(15, 12);
             label2.Name = "label2";
             label2.Size = new Size(61, 15);
             label2.TabIndex = 3;
@@ -378,7 +330,7 @@
             // 
             // textBoxLastName
             // 
-            textBoxLastName.Location = new Point(246, 36);
+            textBoxLastName.Location = new Point(15, 33);
             textBoxLastName.Name = "textBoxLastName";
             textBoxLastName.Size = new Size(178, 23);
             textBoxLastName.TabIndex = 2;
@@ -386,7 +338,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(453, 13);
+            label1.Location = new Point(304, 10);
             label1.Name = "label1";
             label1.Size = new Size(39, 15);
             label1.TabIndex = 1;
@@ -394,12 +346,12 @@
             // 
             // textBoxName
             // 
-            textBoxName.Location = new Point(453, 34);
+            textBoxName.Location = new Point(304, 31);
             textBoxName.Name = "textBoxName";
             textBoxName.Size = new Size(178, 23);
             textBoxName.TabIndex = 0;
             // 
-            // FormListAppointment
+            // FormDoctorAppointmentList
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -410,16 +362,18 @@
             Controls.Add(panel1);
             Font = new Font("Segoe UI Symbol", 9F, FontStyle.Regular, GraphicsUnit.Point);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "FormListAppointment";
+            Name = "FormDoctorAppointmentList";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "FormPatientList";
             WindowState = FormWindowState.Maximized;
-            Load += FormListAppointment_Load;
+            Load += FormDoctorAppointmentList_Load;
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewAppointmentList).EndInit();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             ResumeLayout(false);
         }
 
@@ -442,24 +396,20 @@
         private TextBox textBoxLastName;
         private TextBox textBoxName;
         private DateTimePicker dateTimePickerDateOfVisit;
-        private ComboBox comboBoxDoctorSpecialization;
-        private Label label5;
         private Button buttonClearFiltr;
         private Button buttonAddFiltr;
-        private ComboBox comboBoxSelectDoctorOrPatient;
-        private Label label6;
         private MaskedTextBox maskedTextBoxPESEL;
         private Label label3;
         private Label label2;
         private Label label1;
         private CheckBox checkBoxDateOfVisit;
         private CheckBox checkBoxName;
-        private Button button_Clear;
-        private Button buttonRescheduleAppointment;
+        private PictureBox pictureBox4;
+        private PictureBox pictureBox5;
+        private DataGridViewTextBoxColumn Column1;
         private DataGridViewTextBoxColumn ColumnPatient;
+        private DataGridViewTextBoxColumn Columnfirstname;
         private DataGridViewTextBoxColumn ColumnPESEL;
-        private DataGridViewTextBoxColumn ColumnDoctor;
-        private DataGridViewTextBoxColumn ColumnSpecialization;
         private DataGridViewTextBoxColumn ColumnDate;
         private DataGridViewTextBoxColumn ColumnHour;
         private DataGridViewTextBoxColumn ColumnOffice;

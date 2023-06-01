@@ -83,6 +83,16 @@ namespace Console_Management_of_medical_clinic.Logic
             return GetPatientsData().FirstOrDefault(patient => patient.PatientId == id);
         }
 
+        public static string GetPatientInfoById(int id)
+        {
+            Patient patient = GetPatientById(id);
+            if (patient != null)
+            {
+                return patient.FirstName.ToString() + " " + patient.LastName.ToString();
+            }
+            return null;
+        }
+
         public bool IsValidName(string patientName, out string errorMessage)
         {
             // White space checking

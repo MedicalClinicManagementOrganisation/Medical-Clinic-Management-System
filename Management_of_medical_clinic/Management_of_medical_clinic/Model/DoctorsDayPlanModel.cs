@@ -10,6 +10,7 @@ using Console_Management_of_medical_clinic.Data.Enums;
 using Console_Management_of_medical_clinic.Data;
 using Console_Management_of_medical_clinic.Migrations;
 
+
 namespace Console_Management_of_medical_clinic.Model
 {
     public class DoctorsDayPlanModel
@@ -88,6 +89,7 @@ namespace Console_Management_of_medical_clinic.Model
             Cost.ToString()
         };
 
+
         public static void RemoveDoctorsDayPlanModel(AppDbContext context)
         {
             List<DoctorsDayPlanModel> doctorsDayPlanModels = CalendarAppointmentService.GetAppointmentsWithPatients();
@@ -103,5 +105,18 @@ namespace Console_Management_of_medical_clinic.Model
                 }
             }
         }
+
+        public object[] appointmentDoctorData => new object[] {
+            PatientService.GetPatientById((int)PatientId).PatientId,
+            PatientService.GetPatientById((int)PatientId).LastName,
+            PatientService.GetPatientById((int)PatientId).FirstName,
+            PatientService.GetPatientById((int)PatientId).PESEL,
+            CalendarService.GetDateByIdCalendar((int)IdCalendar,IdDay).ToShortDateString(),
+            DoctorsPlanService.GetTermDescription((EnumTerms)IdOfTerm),
+            OfficeService.GetOfficeById((int)IdOffice).Number,
+            Cost.ToString()
+        };
+
+
     }
 }

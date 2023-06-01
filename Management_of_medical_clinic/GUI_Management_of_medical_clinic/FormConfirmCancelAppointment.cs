@@ -1,6 +1,7 @@
 ﻿using Console_Management_of_medical_clinic.Data;
 using Console_Management_of_medical_clinic.Data.Enums;
 using Console_Management_of_medical_clinic.Logic;
+using Console_Management_of_medical_clinic.Migrations;
 using Console_Management_of_medical_clinic.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -57,7 +58,22 @@ namespace GUI_Management_of_medical_clinic
                 }
                 else if (source == "clear from appointment" || source == "clear from calendar")
                 {
-                    DoctorsDayPlanModel.RemoveDoctorsDayPlanModel(context);
+                    List<DoctorsDayPlanModel> doctorsDayPlanModels = CalendarAppointmentService.GetAppointmentsWithPatients();
+
+                    foreach (DoctorsDayPlanModel doctorsDayPlanModel in doctorsDayPlanModels)
+                    {
+                        DateTime date = CalendarService.GetDateByIdCalendar((int)doctorsDayPlanModel.IdCalendar, doctorsDayPlanModel.IdDay);
+                        string term = AppointmentService.GetTermByTermId((int)doctorsDayPlanModel.IdOfTerm);
+                        TimeSpan time = TimeSpan.ParseExact(term, "hh\\:mm", null);
+
+                        if (date <= DateTime.Now.Date && time <= DateTime.Now.TimeOfDay && (doctorsDayPlanModel.Status == EnumAppointmentStatus.Accepted ||
+                            doctorsDayPlanModel.Status == EnumAppointmentStatus.Scheduled || doctorsDayPlanModel.Status == EnumAppointmentStatus.Confirmed))
+                        {
+                            doctorsDayPlanModel.Status = EnumAppointmentStatus.Overdue;
+                            context.Entry(doctorsDayPlanModel).State = EntityState.Modified;
+                            context.SaveChanges();
+                        }
+                    }
 
                     string msg3 = "The calendar has been cleared.";
                     FormMessage formMessage3 = new FormMessage(msg3);

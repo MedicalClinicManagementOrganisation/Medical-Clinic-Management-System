@@ -18,6 +18,7 @@ namespace GUI_Management_of_medical_clinic
         CalendarModel duplicateCalendar;
         string _selectedDate = "";
         DateTime displayMonth = DateTime.Today;
+        DateTime currentMonth = new DateTime();
 
         public FormDoctorsPlanCalendar(EmployeeModel currentEmployee, bool previousMonth = false)
         {
@@ -43,8 +44,8 @@ namespace GUI_Management_of_medical_clinic
 
             displayMonth = DateTime.Today.AddMonths(1);
 
-            createCalendarButton.Click -= createCalendarButton_Click;
-            createCalendarButton.Click += duplicateCalendar_Click;
+            buttonCreateCalendar.Click -= createCalendarButton_Click;
+            buttonCreateCalendar.Click += duplicateCalendar_Click;
 
         }
 
@@ -59,9 +60,9 @@ namespace GUI_Management_of_medical_clinic
             button2.Visible = false;
             button3.Visible = false;
 
-            createCalendarButton.Text = "Edit Calendar";
-            createCalendarButton.Click -= createCalendarButton_Click;
-            createCalendarButton.Click += editCalendar_Click;
+            buttonCreateCalendar.Text = "Edit Calendar";
+            buttonCreateCalendar.Click -= createCalendarButton_Click;
+            buttonCreateCalendar.Click += editCalendar_Click;
 
         }
 
@@ -70,21 +71,65 @@ namespace GUI_Management_of_medical_clinic
             throw new NotImplementedException();
         }
 
+        private void UserControlDay_ControlClicked(object sender, DateTime selectedDate)   // Date From UserControlDay
+        {
+            CheckTheMonth();
+            labelDate.Text = selectedDate.ToString("d");
+            _selectedDate = selectedDate.ToString("d");
 
-        DateTime currentMonth = new DateTime();
+            List<DoctorsDayPlanModel> plansDuplicated = DoctorsPlanService.CheckPlansAndReturnForADay(selectedDate, duplicateCalendar == null ? 0 : duplicateCalendar.IdCalendar);
+            List<DoctorsDayPlanModel> plansOriginal = DoctorsPlanService.CheckPlansAndReturnForADay(selectedDate, CalendarService.GetCalendarIdByDate(displayMonth.ToString("d")));
+            List<DoctorsDayPlanModel> plans = plansDuplicated.Concat(plansOriginal).ToList();
+
+            dataGridViewAppointments.Rows.Clear();
+
+            try
+            {
+                //Load DataGridView Data
+                plans.ForEach(plan =>
+                {
+                    dataGridViewAppointments.Rows.Add(
+                        EmployeeService.GetEmployeeInfoById((int)plan.IdEmployee),
+                        OfficeService.GetOfficeInfoById((int)plan.IdOffice),
+                        DoctorsPlanService.GetTermDescription((EnumTerms)plan.IdOfTerm),
+                        PatientService.GetPatientInfoById((int)(plan.PatientId == null ? 0 : plan.PatientId)),
+                        DoctorsPlanService.GetStatusInfo((EnumAppointmentStatus)plan.Status)
+                        );
+                });
+            }
+            catch
+            {
+                MessageBox.Show("Failed to load data");
+            }
+
+
+            //Changed as DbAppointment is not used anymore
+
+            //List<AppointmentModel> appointments = AppointmentService.CheckAppointmentsAndReturnList(selectedDate, duplicateCalendar == null ? 0 : duplicateCalendar.IdCalendar);
+
+            //dataGridViewAppointments.Rows.Clear();
+            //foreach (AppointmentModel appointment in appointments)
+            //{
+            //    string timeTerm = AppointmentService.GetTermByTermId(appointment.IdTerm);
+            //    Patient patient = PatientService.GetPatientById((int)appointment.PatientId);
+            //    dataGridViewAppointments.Rows.Add(appointment.IdEmployee, appointment.IdDay, timeTerm, patient.FirstName + " " + patient.LastName);
+            //}
+        }
 
         private void FormCalendar_Load(object sender, EventArgs e)
         {
+            updateLabeCalendarExists();
+
             RemoveControlPanels();
             displayDays(displayMonth);
             ChangeTitle(displayMonth);
 
             dataGridViewAppointments.Rows.Clear();
             dataGridViewAppointments.Columns.Add("Doctor", "Doctor");
-            dataGridViewAppointments.Columns.Add("Day", "Day");
+            dataGridViewAppointments.Columns.Add("Office", "Office");
             dataGridViewAppointments.Columns.Add("Hour", "Hour");
             dataGridViewAppointments.Columns.Add("Patient", "Patient");
-
+            dataGridViewAppointments.Columns.Add("Status", "Status");
         }
 
         private void buttonToday_Click(object sender, EventArgs e)
@@ -103,6 +148,10 @@ namespace GUI_Management_of_medical_clinic
 
             displayDays(displayMonth);
             ChangeTitle(displayMonth);
+
+            updateLabeCalendarExists();
+            dataGridViewAppointments.Rows.Clear();
+            labelDate.Text = "Select Term";
         }
 
         private void buttonNextMonth_Click(object sender, EventArgs e)
@@ -113,6 +162,10 @@ namespace GUI_Management_of_medical_clinic
 
             displayDays(displayMonth);
             ChangeTitle(displayMonth);
+
+            updateLabeCalendarExists();
+            dataGridViewAppointments.Rows.Clear();
+            labelDate.Text = "Select Term";
         }
 
         private void buttonExit_Click(object sender, EventArgs e)
@@ -126,6 +179,27 @@ namespace GUI_Management_of_medical_clinic
         }
 
         #region
+        private void updateLabeCalendarExists()
+        {
+            string month = displayMonth.ToString("MM");
+            string year = displayMonth.ToString("yyyy");
+            string monthAndYear = month + "-" + year;
+            if (CalendarService.checkIfCalendarExistsCalendarAdd(monthAndYear))
+            {
+                //MessageBox.Show(monthAndYear);
+                labelCalendarExists.Text = "Calendar created";
+                labelCalendarExists.ForeColor = Color.GreenYellow;
+                buttonAddAppointment.Enabled = true;
+                buttonCreateCalendar.Enabled = false;
+            }
+            else
+            {
+                labelCalendarExists.Text = "Calendar not created";
+                labelCalendarExists.ForeColor = Color.IndianRed;
+                buttonAddAppointment.Enabled = false;
+                buttonCreateCalendar.Enabled = true;
+            }
+        }
 
         private void RemoveControlPanels()
         {
@@ -238,37 +312,7 @@ namespace GUI_Management_of_medical_clinic
             }
         }
 
-        private void UserControlDay_ControlClicked(object sender, DateTime selectedDate)   // Date From UserControlDay
-        {
-            CheckTheMonth();
-            labelDate.Text = selectedDate.ToString("d");
-            _selectedDate = selectedDate.ToString("d");
-
-            List<DoctorsDayPlanModel> plansDuplicated = DoctorsPlanService.CheckPlansAndReturnForADay(selectedDate, duplicateCalendar == null ? 0 : duplicateCalendar.IdCalendar);
-            List<DoctorsDayPlanModel> plansOriginal = DoctorsPlanService.CheckPlansAndReturnForADay(selectedDate, CalendarService.GetCalendarIdByDate(displayMonth.ToString("d")));
-            List<DoctorsDayPlanModel> plans = plansDuplicated.Concat(plansOriginal).ToList();
-
-            dataGridViewAppointments.Rows.Clear();
-
-            plans.ForEach(plan =>
-            {
-
-                dataGridViewAppointments.Rows.Add(plan.IdEmployee, plan.IdDay, DoctorsPlanService.GetTermDescription((EnumTerms)plan.IdOfTerm), PatientService.GetPatientById((int)(plan.PatientId == null ? 0 : plan.PatientId)));  //in database there is a null value at PatientId
-
-            });
-
-            //Changed as DbAppointment is not used anymore
-
-            //List<AppointmentModel> appointments = AppointmentService.CheckAppointmentsAndReturnList(selectedDate, duplicateCalendar == null ? 0 : duplicateCalendar.IdCalendar);
-
-            //dataGridViewAppointments.Rows.Clear();
-            //foreach (AppointmentModel appointment in appointments)
-            //{
-            //    string timeTerm = AppointmentService.GetTermByTermId(appointment.IdTerm);
-            //    Patient patient = PatientService.GetPatientById((int)appointment.PatientId);
-            //    dataGridViewAppointments.Rows.Add(appointment.IdEmployee, appointment.IdDay, timeTerm, patient.FirstName + " " + patient.LastName);
-            //}
-        }
+        
 
         public static int ExtractIdFromDataGridView(string input)
         {
@@ -281,7 +325,7 @@ namespace GUI_Management_of_medical_clinic
             }
             else
             {
-                return -1; 
+                return -1;
             }
         }
 
@@ -291,9 +335,8 @@ namespace GUI_Management_of_medical_clinic
 
         private void buttonAddAppointment_Click(object sender, EventArgs e)
         {
-            if (_selectedDate.Length != 0)
+            try
             {
-
                 if (CalendarService.checkIfCalendarExists(_selectedDate) == true)
                 {
                     FormDoctorsDayPlanAdd formAppointmentAdd = new FormDoctorsDayPlanAdd(DateTime.Parse(labelDate.Text), currentEmployee);
@@ -305,9 +348,8 @@ namespace GUI_Management_of_medical_clinic
                 {
                     MessageBox.Show("A calendar hasn't been started for the given month");
                 }
-
             }
-            else
+            catch
             {
                 MessageBox.Show("A term needs to be selected");
             }
@@ -390,6 +432,8 @@ namespace GUI_Management_of_medical_clinic
             }
             previousMonth = false;
         }
+
+        
 
         private bool CheckTheHoliday(DateTime date)
         {

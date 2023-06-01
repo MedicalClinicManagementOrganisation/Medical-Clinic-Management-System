@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
@@ -33,9 +34,11 @@ namespace GUI_Management_of_medical_clinic
         public FormRegisterAppointment(EmployeeModel user, DoctorsDayPlanModel? appointment)
         {
             InitializeComponent();
+            dataGridView_app_doctor.ClearSelection();
+            DisplayDoctor();
+            DisplayPatient();
+            AddSpecializationToCombobox();
 
-            comboboxPatient_add();
-            comboboxDoctor_add();
 
             this.appointment = appointment;
             this.currentUser = user;
@@ -44,27 +47,128 @@ namespace GUI_Management_of_medical_clinic
         public FormRegisterAppointment(EmployeeModel user, DoctorsDayPlanModel appointment, bool isEdit)
         {
             InitializeComponent();
+            dataGridView_app_doctor.ClearSelection();
 
-            comboboxPatient_add();
-            comboboxDoctor_add();
+
+            DisplayDoctor();
+            DisplayPatient();
+            AddSpecializationToCombobox();
 
             this.appointment = appointment;
             this.currentUser = user;
             this.isEdit = isEdit;
-            
+
         }
 
+        public void DisplayDoctor()
+        {
+
+            using AppDbContext context = new();
+            var doctors = context.DbEmployees
+                .Include(d => d.SpecializationModel)
+                .Where(d => d.Role == EnumEmployeeRoles.MedicalDoctor)
+                .Select(
+                    d => new
+                    {
+                        d.IdEmployee,
+                        d.FirstName,
+                        d.LastName,
+                        Specialization = d.SpecializationModel.Name
+                    }
+                        )
+                .ToList();
+            string searchedDoctor = textBox1_doctor.Text;
+            string searchedSpecializaton = comboBoxDoctorSpecialization.SelectedItem?.ToString();
+
+            if (!string.IsNullOrEmpty(searchedSpecializaton))
+            {
+                doctors = doctors.Where(d => d.Specialization == searchedSpecializaton).ToList();
+            }
+            if (!string.IsNullOrEmpty(searchedDoctor))
+            {
+                searchedDoctor = searchedDoctor.ToLower();
+                doctors = doctors.Where(
+                        d =>
+                        (d.FirstName + " " + d.LastName).ToLower().Contains(searchedDoctor)).ToList();
+
+            }
+
+            if (textBox1_doctor.Text == string.Empty && comboBoxDoctorSpecialization.SelectedIndex == -1)
+            {
+
+                dataGridView_app_doctor.AutoGenerateColumns = false;
+                dataGridView_app_doctor.Columns.Add("IdEmployee", "ID");
+                dataGridView_app_doctor.Columns.Add("FirstName", "First Name");
+                dataGridView_app_doctor.Columns.Add("LastName", "Last Name");
+                dataGridView_app_doctor.Columns.Add("Specialization", "Specialization");
+            }
+
+
+            dataGridView_app_doctor.Columns["IdEmployee"].DataPropertyName = "IdEmployee";
+            dataGridView_app_doctor.Columns["FirstName"].DataPropertyName = "FirstName";
+            dataGridView_app_doctor.Columns["LastName"].DataPropertyName = "LastName";
+            dataGridView_app_doctor.Columns["Specialization"].DataPropertyName = "Specialization";
+
+            dataGridView_app_doctor.Columns["FirstName"].Width = 250;
+            dataGridView_app_doctor.Columns["LastName"].Width = 250;
+            dataGridView_app_doctor.Columns["Specialization"].Width = 250;
+
+            dataGridView_app_doctor.Columns["IdEmployee"].Visible = false;
+
+            dataGridView_app_doctor.DataSource = doctors;
+
+            //dataGridView_app_doctor.Rows[0].Selected = true;
+        }
+
+        public void DisplayPatient()
+        {
+            List<Patient> patients = PatientService.GetPatientsData();
+
+            dataGridView_app_Patient.AutoGenerateColumns = false;
+            dataGridView_app_Patient.Columns.Add("PatientId", "ID");
+            dataGridView_app_Patient.Columns.Add("FirstName", "First Name");
+            dataGridView_app_Patient.Columns.Add("LastName", "Last Name");
+            dataGridView_app_Patient.Columns.Add("PESEL", "PESEL");
+
+            dataGridView_app_Patient.Columns["PatientId"].DataPropertyName = "PatientId";
+            dataGridView_app_Patient.Columns["FirstName"].DataPropertyName = "FirstName";
+            dataGridView_app_Patient.Columns["LastName"].DataPropertyName = "LastName";
+            dataGridView_app_Patient.Columns["PESEL"].DataPropertyName = "PESEL";
+
+            dataGridView_app_Patient.Columns["FirstName"].Width = 250;
+            dataGridView_app_Patient.Columns["LastName"].Width = 250;
+            dataGridView_app_Patient.Columns["PESEL"].Width = 250;
+
+            dataGridView_app_Patient.Columns["PatientId"].Visible = false;
+
+            dataGridView_app_Patient.DataSource = patients;
+
+            dataGridView_app_Patient.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView_app_Patient.Rows[0].Selected = true;
+        }
+
+        private void AddSpecializationToCombobox()
+        {
+            List<SpecializationModel> specializations = SpecializationService.GetSpecializationsData();
+
+            foreach (SpecializationModel specialization in specializations)
+            {
+                int index = comboBoxDoctorSpecialization.Items.Add(specialization.ToString());
+                comboBoxDoctorSpecialization.Items[index] = specialization;
+            }
+
+        }
 
         private void FormRegisterAppointment_Load(object sender, EventArgs e)
         {
-            if (appointment != null && isEdit==false)
+            if (appointment != null && isEdit == false)
             {
                 OnlyReadDoctorAndDateComboBox();
                 SelectDateInCombo();
                 SelectDoctorInComboBox();
             }
 
-            if (isEdit ==true)
+            if (isEdit == true)
             {
                 LockDoctorAndPatientComboBox();
                 SelectPatientInComboBox();
@@ -75,57 +179,7 @@ namespace GUI_Management_of_medical_clinic
 
         }
 
-        void comboboxPatient_add()
-        {
-            comboBoxPatient.Items.Clear();
-            List<Patient> patients =
-            PatientService.GetPatientsData();
-            comboBoxPatient.Items.Clear();
-            foreach (Patient patient in patients)
-            {
-                comboBoxPatient.Items.Add(patient);
-            }
-            comboBoxPatient.DisplayMember = patients.ToString();
-        }
 
-        void comboboxDoctor_add()
-        {
-            comboBoxDoctor.Items.Clear();
-            List<EmployeeModel> employees =
-            EmployeeService.GetEmployeesData()
-             .Where(d => d.Role == EnumEmployeeRoles.MedicalDoctor)
-             .ToList();
-            comboBoxDoctor.Items.Clear();
-            foreach (EmployeeModel employee in employees)
-            {
-                comboBoxDoctor.Items.Add(employee);
-            }
-            comboBoxPatient.DisplayMember = employees.ToString();
-        }
-
-        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            comboBoxDate.SelectedIndex = -1;
-            comboBoxDate.Items.Clear();
-            int selectedDoctorId = -1;
-            if (comboBoxDoctor.SelectedItem != null)
-            {
-                EmployeeModel doc = (EmployeeModel)comboBoxDoctor.SelectedItem;
-                selectedDoctorId = doc.IdEmployee;
-            }
-            List<DoctorsDayPlanModel> appointments =
-            CalendarAppointmentService.GetAppointmentsData()
-                .Where(a => a.IdEmployee == selectedDoctorId && a.Status == EnumAppointmentStatus.Accepted && a.PatientId == null)
-                .ToList();
-            
-            comboBoxDate.Items.Clear();
-            foreach (DoctorsDayPlanModel appointment in appointments)
-            {
-                comboBoxDate.Items.Add(appointment);
-            }
-            comboBoxDate.DisplayMember = appointments.ToString();
-
-        }
 
         private void comboBox3_SelectionChangeCommitted(object sender, EventArgs e)
         {
@@ -141,8 +195,7 @@ namespace GUI_Management_of_medical_clinic
 
         private void CheckIfAllComboBoxesAreSelected()
         {
-            if (comboBoxPatient.SelectedIndex == -1 ||
-                comboBoxDoctor.SelectedIndex == -1 ||
+            if (
                 comboBoxDate.SelectedIndex == -1)
             {
                 buttonAddAppointment.Enabled = false;
@@ -173,10 +226,11 @@ namespace GUI_Management_of_medical_clinic
                 DoctorsDayPlanModel selectedAppointment = (DoctorsDayPlanModel)comboBoxDate.SelectedItem;
                 selectedAppointmentId = selectedAppointment.IdDoctorsDayPlan;
             }
-            
-            if (comboBoxPatient.SelectedItem != null)
+
+            if (dataGridView_app_Patient.SelectedRows.Count == 1)
             {
-                Patient selectedPatient = (Patient)comboBoxPatient.SelectedItem;
+                DataGridViewRow selectedRow = dataGridView_app_Patient.SelectedRows[0];
+                Patient selectedPatient = (Patient)selectedRow.DataBoundItem;
                 selectedPatientId = selectedPatient.PatientId;
             }
 
@@ -194,7 +248,7 @@ namespace GUI_Management_of_medical_clinic
             }
 
 
-            if(isEdit == true)
+            if (isEdit == true)
             {
                 DoctorsPlanService.RemovePatientFromPlan(appointment);
 
@@ -216,7 +270,7 @@ namespace GUI_Management_of_medical_clinic
 
         private void buttonBack_Click(object sender, EventArgs e)
         {
-            if(isEdit == false)
+            if (isEdit == false)
             {
                 FormCalendarAppointment formCalendarAppointment = new FormCalendarAppointment(currentUser);
                 this.Hide();
@@ -231,14 +285,14 @@ namespace GUI_Management_of_medical_clinic
                 this.Close();
             }
 
-            
+
         }
 
         #region Function
         private void OnlyReadDoctorAndDateComboBox()
         {
             comboBoxDate.Enabled = false;
-            comboBoxDoctor.Enabled = false;
+            //comboBoxDoctor.Enabled = false;
         }
 
 
@@ -254,8 +308,8 @@ namespace GUI_Management_of_medical_clinic
 
         private void LockDoctorAndPatientComboBox()
         {
-            comboBoxDoctor.Enabled = false;
-            comboBoxPatient.Enabled = false;
+            //comboBoxDoctor.Enabled = false;
+            //comboBoxPatient.Enabled = false;
         }
 
         private void SelectPatientInComboBox()
@@ -264,20 +318,20 @@ namespace GUI_Management_of_medical_clinic
             patient = PatientService.GetPatientById((int)appointment.PatientId);
 
 
-            comboBoxPatient.Items.Clear();
-            comboBoxPatient.Items.Add(patient);
+            //comboBoxPatient.Items.Clear();
+            // comboBoxPatient.Items.Add(patient);
 
-            comboBoxPatient.SelectedIndex = 0;
+            //comboBoxPatient.SelectedIndex = 0;
         }
 
         private void SelectDoctorInComboBox()
         {
-            comboBoxDoctor.Items.Clear();
+            // comboBoxDoctor.Items.Clear();
             EmployeeModel employee = new EmployeeModel();
             employee = EmployeeService.GetEmployeeByID((int)appointment.IdEmployee);
 
-            comboBoxDoctor.Items.Add(employee);
-            comboBoxDoctor.SelectedIndex = 0;
+            // comboBoxDoctor.Items.Add(employee);
+            //comboBoxDoctor.SelectedIndex = 0;
         }
 
         private void SelectDateInCombo()
@@ -289,5 +343,141 @@ namespace GUI_Management_of_medical_clinic
 
         #endregion
 
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridView_app_Patient_CellValuePushed(object sender, DataGridViewCellValueEventArgs e)
+        {
+
+        }
+
+        private void dataGridView_app_Patient_SelectionChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView_app_doctor_SelectionChanged(object sender, EventArgs e)
+        {
+            int selectedDoctorId = 0;
+
+
+            if (dataGridView_app_doctor.SelectedRows.Count == 1)
+            {
+                DataGridViewRow selectedRow = dataGridView_app_doctor.SelectedRows[0];
+
+                int employeeId = Convert.ToInt32(selectedRow.Cells["IdEmployee"].Value);
+
+                //using AppDbContext context = new();
+                //EmployeeModel selectedEmployee = context.DbEmployees.Find(employeeId);
+                selectedDoctorId = employeeId;
+            }
+
+            List<DoctorsDayPlanModel> appointments =
+            CalendarAppointmentService.GetAppointmentsData()
+                .Where(a => a.IdEmployee == selectedDoctorId && a.Status == EnumAppointmentStatus.Accepted && a.PatientId == null)
+                .ToList();
+
+
+			comboBoxDate.Items.Clear();
+
+			using AppDbContext context = new();
+			foreach (DoctorsDayPlanModel appointment in appointments)
+            {
+                CalendarModel calendar = context.DbCalendars.FirstOrDefault(c => c.IdCalendar == appointment.IdCalendar)!;
+                DateTime calendarDateTime = DateTime.ParseExact(calendar.DateReference, "MM-yyyy", CultureInfo.InvariantCulture);
+
+                if (calendar.Active == true)
+                {
+                    if (calendarDateTime.Year > DateTime.Today.Year)
+                    {
+						comboBoxDate.Items.Add(appointment);
+					}
+                    else if ((calendarDateTime.Year == DateTime.Today.Year))
+                    {
+                        if (calendarDateTime.Month > DateTime.Today.Month)
+                        {
+							comboBoxDate.Items.Add(appointment);
+						}
+                        else if (calendarDateTime.Month == DateTime.Today.Month)
+                        {
+                            if (appointment.IdDay >  DateTime.Today.Day)
+                            {
+								comboBoxDate.Items.Add(appointment);
+							}
+                            else if (appointment.IdDay == DateTime.Today.Day)
+                            {
+								// Sprawdź godzinę
+								string appointmentTime = AppointmentService.GetTermByTermId(appointment.IdOfTerm);
+								DateTime appointmentDateTime = DateTime.ParseExact(appointmentTime, "HH:mm", CultureInfo.InvariantCulture);
+
+								if (appointmentDateTime >= DateTime.Now)
+								{
+									comboBoxDate.Items.Add(appointment);
+								}
+							}
+                        }
+                    }
+                }
+				comboBoxDate.DisplayMember = appointments.ToString();
+
+            }
+        }
+
+        private void buttonShowFilters_Click(object sender, EventArgs e)
+        {
+            if (!(textBox1_Name.Text == string.Empty) || !(TextBox_PESEL.Text == string.Empty))
+            {
+                PatientService patientService = new PatientService();
+                List<Patient> FiltredPatients = patientService.FilterPatient(textBox1_Name.Text, TextBox_PESEL.Text);
+                dataGridView_app_Patient.DataSource = FiltredPatients;
+            }
+        }
+
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (!(textBox1_doctor.Text == string.Empty) || !(comboBoxDoctorSpecialization.SelectedIndex == -1))
+            {
+                DisplayDoctor();
+            }
+                
+
+        }
+
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (!(textBox1_Name.Text == string.Empty) || !(TextBox_PESEL.Text == string.Empty))
+
+            {
+                DisplayPatient();
+                textBox1_Name.Text = string.Empty;
+                TextBox_PESEL.Text = string.Empty;
+                
+
+            }
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (!(textBox1_doctor.Text == string.Empty) || !(comboBoxDoctorSpecialization.SelectedIndex == -1))
+
+            {
+                textBox1_doctor.Text = string.Empty;
+                comboBoxDoctorSpecialization.SelectedIndex = -1;
+                DisplayDoctor();
+
+
+
+            }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

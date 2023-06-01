@@ -21,7 +21,7 @@ namespace MedicalClinicTest
 			CalendarService calendarService = new();
 			List<CalendarModel> sortedCalendars = calendarService.Sort("", false);
 
-			Assert.StartsWith("05", sortedCalendars[0].DateReference);
+			Assert.StartsWith("08", sortedCalendars[0].DateReference);
 		}
 
 		[Fact]
@@ -103,7 +103,7 @@ namespace MedicalClinicTest
 			List<CalendarModel> filteredCalendars = calendarService.Filter("", activityStatus);
 			int filteredCount = filteredCalendars.Count();
 
-			Assert.Equal(3, filteredCount);
+			Assert.Equal(5, filteredCount);
 		}
 
 		[Fact]

@@ -118,12 +118,14 @@ namespace GUI_Management_of_medical_clinic
             foreach (DoctorsDayPlanModel doctorsDayPlanModel in doctorsDayPlanModels)
             {
                 DateTime date = CalendarService.GetDateByIdCalendar((int)doctorsDayPlanModel.IdCalendar, doctorsDayPlanModel.IdDay);
+                string term = AppointmentService.GetTermByTermId((int)doctorsDayPlanModel.IdOfTerm);
+                TimeSpan time = TimeSpan.ParseExact(term, "hh\\:mm", null);
 
-                if (doctorsDayPlanModel.Status == EnumAppointmentStatus.Overdue || date < DateTime.Now.Date)
+                if (date <= DateTime.Now.Date && time <= DateTime.Now.TimeOfDay && (doctorsDayPlanModel.Status == EnumAppointmentStatus.Accepted ||
+                    doctorsDayPlanModel.Status == EnumAppointmentStatus.Scheduled || doctorsDayPlanModel.Status == EnumAppointmentStatus.Confirmed))
                 {
-                    FormConfirmCancelAppointment clear = new FormConfirmCancelAppointment("clear from calendar", currentUser, doctorsDayPlanModel);
+                    FormConfirmCancelAppointment clear = new FormConfirmCancelAppointment("clear from appointment", currentUser, doctorsDayPlanModel);
                     clear.ShowDialog();
-                    return;
                 }
                 else
                 {
@@ -131,7 +133,7 @@ namespace GUI_Management_of_medical_clinic
                 }
             }
 
-            if (count > 0)
+            if (count == doctorsDayPlanModels.Count)
             {
                 string msg1 = "The calendars are already cleared.";
                 FormMessage FormMessage1 = new FormMessage(msg1);

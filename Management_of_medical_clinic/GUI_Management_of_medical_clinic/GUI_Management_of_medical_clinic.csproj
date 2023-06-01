@@ -30,10 +30,28 @@
     <Compile Update="CalendarProperties\UserControlDaySmall.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="FormDoctorCalendarInChosenMonth.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="FormCalendarAppointment.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="FormDoctorAppointmentList.cs" />
     <Compile Update="FormListAppointment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormDoctorCalendarAcceptConfirm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormDoctorCalendarDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormDoctorCalendarRejectConfirm.cs" />
+    <Compile Update="FormDoctorCalendar.cs" />
+    <Compile Update="FormDoctorPatientList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormDoctorPatientVisitDetails.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
