@@ -24,56 +24,75 @@ namespace GUI_Management_of_medical_clinic
             this.currentUser = currentUser;
             InitializeComponent();
             label1.Text = "Welcome, " + currentUser.FirstName;
+            label2.Text = "Today is " + DateTime.Now.ToString("dd.MM.yyyy");
         }
 
         private void FormDoctorDashboard_Load(object sender, EventArgs e)
         {
-            dataGridView1.Rows.Clear();
-            dataGridView1.Columns.Add("Room", "Room");
-            dataGridView1.Columns.Add("Hour", "Hour");
-            dataGridView1.Columns.Add("Patient", "Patient");
-            dataGridView1.Columns.Add("Day", "Day");
-            dataGridView1.Columns.Add("PatientId", "PatientId");
-
+            InsertDataDataGridView();
+        }
+        #region DataGridView
+        private void InsertDataDataGridView()
+        {
+            dataGridViewVisits.Rows.Clear();
 
             List<DoctorsDayPlanModel> appointments = DoctorsPlanService.GetDoctorsPlanData();
+            int calendarId = CalendarService.GetIdFromDate(DateTime.Now.Date);
+
+
             foreach (DoctorsDayPlanModel appointment in appointments)
             {
-                if (appointment.IdEmployee == currentUser.IdEmployee && appointment.IdCalendar == 1 && appointment.IdDay == 10)//DateTime.Now.Day)
+                if (appointment.IdEmployee == currentUser.IdEmployee && appointment.IdCalendar == calendarId && appointment.IdDay == DateTime.Now.Day)
                 {
                     string timeTerm = AppointmentService.GetTermByTermId(appointment.IdOfTerm);
                     Patient? patient = PatientService.GetPatientsData().FirstOrDefault(p => p.PatientId == appointment.PatientId);
 
                     if (patient != null)
                     {
-                        dataGridView1.Rows.Add(appointment.IdOffice, timeTerm, patient.LastName, appointment.IdDay, patient.PatientId);
+                        int index = dataGridViewVisits.Rows.Add(OfficeService.GetOfficeById((int)appointment.IdOffice).Number,
+                            AppointmentService.GetTermByTermId(appointment.IdOfTerm).ToString(),
+                            appointment.Status,
+                            PatientService.GetPatientById((int)appointment.PatientId).ToString(),
+                            patient.PatientId);
+
+                        dataGridViewVisits.Rows[index].Tag = appointment;
                     }
                 }
             }
-
+            dataGridViewVisits.ClearSelection();
         }
-        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dataGridViewVisits_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            dataGridViewVisits.ReadOnly = true;
 
-            if (e.RowIndex >= 0)
+            if (e.RowIndex >= 0 && dataGridViewVisits.Rows.Count > 0)
             {
-                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
-                int patientName = (int)row.Cells[4].Value;
+                dataGridViewVisits.ClearSelection();
 
-                Patient patient = Patient.FindPatient(patientName);
-                labelFullName.Text = patient.FirstName + " " + patient.LastName;
-                labelPESEL.Text = patient.PESEL;
-                labelSex.Text = patient.Sex.ToString();
-                labelBirthday.Text = patient.BirthDate.ToString();
+                DataGridViewRow row = dataGridViewVisits.Rows[e.RowIndex];
+                row.Selected = true;
 
+                int patientName = Convert.ToInt32(row.Cells[4].Value);
+                if (patientName != 0)
+                {
+                    /*
+                    Patient patient = Patient.FindPatient(patientName);
+                    labelFullName.Text = patient.FirstName + " " + patient.LastName;
+                    labelPESEL.Text = patient.PESEL;
+                    labelSex.Text = patient.Sex.ToString();
+                    labelBirthday.Text = patient.BirthDate.ToString();*/
+                }
+                else
+                {
+                    MessageBox.Show("Nie masz wizyt na dzisiaj");
+                }
             }
-
         }
-
+        #endregion
         #region Buttons
         private void button_patients_Click(object sender, EventArgs e)
         {
-            
+
             FormDoctorPatientList formDocPatientList = new FormDoctorPatientList(currentUser);
             this.Hide();
             formDocPatientList.ShowDialog(this);
@@ -139,5 +158,6 @@ namespace GUI_Management_of_medical_clinic
             this.Close();
         }
         #endregion
+
     }
 }

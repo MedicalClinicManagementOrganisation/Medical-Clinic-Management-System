@@ -35,10 +35,6 @@ namespace GUI_Management_of_medical_clinic
         {
             ReloadActiveForm();
         }
-
-
-
-
         private void buttonDisplayAppointments_Click(object sender, EventArgs e)
         {
             FormListAppointment formListAppointment = new FormListAppointment(employee);
@@ -46,7 +42,6 @@ namespace GUI_Management_of_medical_clinic
             formListAppointment.ShowDialog();
             this.Close();
         }
-
         private void UserControlDay_ControlClicked(object sender, DateTime date)   // Date From UserControlDay
         {
             RemoveRowsInDataGridView(dataGridViewTerms);
@@ -61,20 +56,22 @@ namespace GUI_Management_of_medical_clinic
             List<DoctorsDayPlanModel> appointments = CalendarAppointmentService.GetAppointmentsData();
             List<DoctorsDayPlanModel> selectedAppointments = CalendarAppointmentService.appointmentInSelectedDate(appointments, date, calendarId);
 
-            foreach (DoctorsDayPlanModel appointment in selectedAppointments) //change new
+            foreach (DoctorsDayPlanModel appointment in selectedAppointments)
             {
                 if (appointment.PatientId == null && appointment.Status == EnumAppointmentStatus.New && employee.IdEmployee == appointment.IdEmployee)
                 {
                     AddItemToDataGridView(appointment, dataGridViewTerms);
                     displayListInDataGridView.Add(appointment);
                 }
-                if (employee.IdEmployee != appointment.IdEmployee) //tho idk if there should be accepted terms visible
+                if (employee.IdEmployee != appointment.IdEmployee)
                 {
                     AddItemToDataGridView(appointment, dataGridViewOtherAppointments);
                     displayAllDoctorsAppointments.Add(appointment);
 
                 }
             }
+            SortByTime(dataGridViewTerms);
+            //SortByTime(dataGridViewOtherAppointments);
 
             dataGridViewTerms.ClearSelection();
             dataGridViewOtherAppointments.ClearSelection();
@@ -222,19 +219,15 @@ namespace GUI_Management_of_medical_clinic
 
         #region Sort
 
-        private void panelPatient_Click(object sender, EventArgs e)
-        {
-            SortByPatient(dataGridViewTerms);
-        }
-
-        private void labelPatient_Click(object sender, EventArgs e)
-        {
-            SortByPatient(dataGridViewTerms);
-        }
 
         private void panelTime_Click(object sender, EventArgs e)
         {
             SortByTime(dataGridViewTerms);
+        }
+
+        private void panelTime2_Click(object sender, EventArgs e)
+        {
+            SortByTime(dataGridViewOtherAppointments);
         }
 
         private void labelTime_Click(object sender, EventArgs e)
@@ -244,7 +237,7 @@ namespace GUI_Management_of_medical_clinic
         void SortByTime(DataGridView dataGrid)
         {
             List<DoctorsDayPlanModel> result = CalendarAppointmentService.SortByTerm(displayListInDataGridView);
-            dataGridViewTerms.Rows.Clear();
+            dataGrid.Rows.Clear();
 
             foreach (DoctorsDayPlanModel appointment in result)
             {
@@ -252,10 +245,14 @@ namespace GUI_Management_of_medical_clinic
             }
         }
 
+        private void panelDoctor_Click(object sender, EventArgs e)
+        {
+            //SortByDoctor(dataGridViewOtherAppointments);
+        }
         void SortByDoctor(DataGridView dataGrid)
         {
             List<DoctorsDayPlanModel> result = CalendarAppointmentService.SortByDoctorLastName(displayListInDataGridView);
-            dataGridViewTerms.Rows.Clear();
+            dataGrid.Rows.Clear();
 
             foreach (DoctorsDayPlanModel appointment in result)
             {
@@ -263,16 +260,28 @@ namespace GUI_Management_of_medical_clinic
             }
         }
 
-        void SortByPatient(DataGridView dataGrid)
+        private void panel1_Click(object sender, EventArgs e)
         {
-            List<DoctorsDayPlanModel> result = CalendarAppointmentService.SortByPatientLastName(displayListInDataGridView);
-            dataGridViewTerms.Rows.Clear();
+            SortByOffice(dataGridViewTerms);
+        }
+
+        private void panelRoom2_Click(object sender, EventArgs e)
+        {
+            //SortByOffice(dataGridViewOtherAppointments);
+        }
+
+        void SortByOffice(DataGridView dataGrid)
+        {
+            List<DoctorsDayPlanModel> result = CalendarAppointmentService.SortByOffice(displayListInDataGridView);
+            dataGrid.Rows.Clear();
 
             foreach (DoctorsDayPlanModel appointment in result)
             {
                 AddItemToDataGridView(appointment, dataGrid);
             }
         }
+
+
         #endregion
 
         #region LeftPanel
@@ -335,19 +344,18 @@ namespace GUI_Management_of_medical_clinic
         private void button_cancelAppointment_Click(object sender, EventArgs e)
         {
             if (dataGridViewTerms.SelectedRows.Count < 1)
+            {
+                MessageBox.Show("A term needs to be selected");
                 return;
+            }
 
 
-            //when rejecting, term is deleted from database
-            List<int> idDoctor = GetSelectedColumnData(2); //hidden column with idDoctorDayPlan
+            List<int> idDoctor = GetSelectedColumnData(2);
             DialogResult result = MessageBox.Show("Do you want to reject chosen term(s)?", "Confirm rejection", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 DoctorsPlanService.ChangeAppointmentStatusToRejected(idDoctor, employee);
                 MessageBox.Show("Chosen term(s) are now rejected.");
-                /* DateTime month = Convert.ToDateTime(selectedDate);
-                 int id_cal = CalendarService.GetIdFromDate(month);*/
-
             }
             if (result == DialogResult.No)
             {
@@ -368,7 +376,6 @@ namespace GUI_Management_of_medical_clinic
         {
             if (selectedDate.Length != 0)
             {
-                MessageBox.Show(selectedDate);
                 FormDoctorCalendarModify formDoctorCalendarModify = new FormDoctorCalendarModify(null, employee, true, /*DateTime.Parse(selectedDate)*/ selectedDate);
                 this.Hide();
                 formDoctorCalendarModify.ShowDialog();
@@ -382,8 +389,17 @@ namespace GUI_Management_of_medical_clinic
 
         private void button_modifyAppointment_Click(object sender, EventArgs e)
         {
-            if (dataGridViewTerms.SelectedRows.Count != 1)
+            if (dataGridViewTerms.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("A term needs to be selected");
                 return;
+            }
+
+            if (dataGridViewTerms.SelectedRows.Count > 1)
+            {
+                MessageBox.Show("You can edit only one term");
+                return;
+            }
 
             DoctorsDayPlanModel appointment = (DoctorsDayPlanModel)dataGridViewTerms.SelectedRows[0].Tag;
 

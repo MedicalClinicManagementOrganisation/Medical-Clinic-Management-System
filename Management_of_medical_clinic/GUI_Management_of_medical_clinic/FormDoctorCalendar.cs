@@ -36,6 +36,9 @@ namespace GUI_Management_of_medical_clinic
 
             List<DoctorsDayPlanModel> doctorsDayPlanModels = DoctorsPlanService.GetDoctorsPlanData();
             List<CalendarModel> listID = CalendarService.GetCalendarData();
+
+            HashSet<string> uniqueItems = new HashSet<string>();
+
             foreach (DoctorsDayPlanModel doctorsDayPlanModel in doctorsDayPlanModels)
             {
                 int idCalendar = (int)doctorsDayPlanModel.IdCalendar;
@@ -48,22 +51,15 @@ namespace GUI_Management_of_medical_clinic
                 && doctorsDayPlanModel.Status == EnumAppointmentStatus.New && listID.Count > 0)
                 {
                     DateTime date = Convert.ToDateTime(calendar.DateReference);
-                    list_ofCalendars.Items.Add(date.ToString("MM-yyyy"));
+                    uniqueItems.Add(date.ToString("MM-yyyy"));
                 }
             }
-            HashSet<string> uniqueItems = new HashSet<string>();
-            for (int i = list_ofCalendars.Items.Count - 1; i >= 0; i--) //deleting duplicated datas
+
+            foreach(string item in uniqueItems)
             {
-                string item = list_ofCalendars.Items[i].Text;
-                if (!uniqueItems.Contains(item))
-                {
-                    uniqueItems.Add(item);
-                }
-                else
-                {
-                    list_ofCalendars.Items.RemoveAt(i);
-                }
+                list_ofCalendars.Items.Add(item);
             }
+  
         }
 
         private void buttonExit_Click(object sender, EventArgs e)

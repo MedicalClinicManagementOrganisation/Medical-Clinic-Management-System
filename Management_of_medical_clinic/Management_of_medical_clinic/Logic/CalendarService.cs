@@ -273,7 +273,6 @@ namespace Console_Management_of_medical_clinic.Logic
 		}
 
 		//Doctor merge with Rejestracja
-		//???
 		public static List<AppointmentModel> appointmentInSelectedDate(List<AppointmentModel> ListIn, DateTime selectedDate, int idCalendar)
 		{
 			List<AppointmentModel> result = new List<AppointmentModel>();
@@ -300,8 +299,8 @@ namespace Console_Management_of_medical_clinic.Logic
 				calendar.NumberOfAcceptedDoctors++;
 				context.SaveChanges();
 
+                //Change calendar status if all doctors accept
 				CheckIfAllDoctorsAccepted(calendar_id);
-
             }
 		}
 
@@ -317,13 +316,13 @@ namespace Console_Management_of_medical_clinic.Logic
 
         public static void ChangeCalendarStatusToRejected(int calendar_id) //doctors
         {
-           /* using (AppDbContext context = new AppDbContext())
+            using (AppDbContext context = new AppDbContext())
             {
                 CalendarModel calendar = GetCalendarById(calendar_id);
                 context.DbCalendars.Update(calendar);
-                calendar.NumberOfAcceptedDoctors++;
+                calendar.NumberOfDoctors--;
                 context.SaveChanges();
-            }*/ //changes are needed here
+            } //changes are needed here
         }
 
         public static bool AreAllTermsAccepted(int calendar_id, EmployeeModel employee)//added by doctors

@@ -1,4 +1,4 @@
-using Console_Management_of_medical_clinic.Data.Enums;
+﻿using Console_Management_of_medical_clinic.Data.Enums;
 using Console_Management_of_medical_clinic.Logic;
 using Console_Management_of_medical_clinic.Model;
 using GUI_Management_of_medical_clinic;
@@ -12,6 +12,7 @@ namespace GUI_Management_of_medical_clinic
     public partial class FormDoctorCurrentCalendar : Form
     {
         EmployeeModel currentUser;
+        private List<DoctorsDayPlanModel> selectedAppointments = new List<DoctorsDayPlanModel>();
         public FormDoctorCurrentCalendar(EmployeeModel currentUser, bool previousMonth = false)
         {
             InitializeComponent();
@@ -166,6 +167,74 @@ namespace GUI_Management_of_medical_clinic
         }
 
         #region DateGridView
+        int calendarId = CalendarService.GetIdFromDate(DateTime.Now.Date);
+        private void dataGridViewAppointments_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                DataGridViewRow row = dataGridViewAppointments.Rows[e.RowIndex];
+                DoctorsDayPlanModel appointment = row.Tag as DoctorsDayPlanModel;
+                DateTime term = Convert.ToDateTime(AppointmentService.GetTermByTermId(appointment.IdOfTerm));
+                if (appointment != null)
+                {
+                    if (appointment.IdCalendar == calendarId)
+                    {
+                        //                               chаnge here v !
+                        if (appointment.IdDay == DateTime.Now.Day - 11 && term.TimeOfDay > DateTime.Now.TimeOfDay)
+                        {
+                            if (row.Selected)
+                            {
+                                if (!selectedAppointments.Contains(appointment))
+                                {
+                                    selectedAppointments.Add(appointment);
+                                }
+                            }
+                            else
+                            {
+                                selectedAppointments.Remove(appointment);
+                            }
+                        } //                              chаnge here v 
+                        else if (appointment.IdDay > DateTime.Now.Day - 11)
+                        {
+                            if (row.Selected)
+                            {
+                                if (!selectedAppointments.Contains(appointment))
+                                {
+                                    selectedAppointments.Add(appointment);
+                                }
+                            }
+                            else
+                            {
+                                selectedAppointments.Remove(appointment);
+                            }
+
+                        }
+                        else
+                        {
+                            MessageBox.Show("You can't pick this time out to cancelling , because appointment already was");
+                        }
+
+                    }
+                }
+                else if (appointment.IdCalendar > calendarId)
+                {
+
+                    if (row.Selected)
+                    {
+                        if (!selectedAppointments.Contains(appointment))
+                        {
+                            selectedAppointments.Add(appointment);
+                        }
+                    }
+                    else
+                    {
+                        selectedAppointments.Remove(appointment);
+                    }
+
+
+                }
+            }
+        }
         private void DisplayDataInDataGridView(List<DoctorsDayPlanModel> appointments, int calendarId, DateTime selectedDate)
         {
             dataGridViewAppointments.Rows.Clear();
@@ -220,5 +289,24 @@ namespace GUI_Management_of_medical_clinic
             formDoctorAppointmentList.ShowDialog(this);
             this.Show();
         }
+
+        private void CorrectDateToCancel()
+        {
+
+        }
+        private void button_cancelAppointment_Click(object sender, EventArgs e)
+        {
+            if (selectedAppointments.Count() != 0)
+            {
+                FormDoctorCancelVisit cancelVisit = new FormDoctorCancelVisit(selectedAppointments, currentUser);
+                cancelVisit.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("You have to select an appointment");
+            }
+        }
+
+        
     }
 }

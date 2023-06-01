@@ -134,6 +134,7 @@
             dateTimePicker.Size = new Size(454, 34);
             dateTimePicker.TabIndex = 62;
             dateTimePicker.Value = new DateTime(2023, 4, 6, 0, 0, 0, 0);
+            dateTimePicker.ValueChanged += dateTimePicker_ValueChanged;
             // 
             // labelDateOfVisit
             // 

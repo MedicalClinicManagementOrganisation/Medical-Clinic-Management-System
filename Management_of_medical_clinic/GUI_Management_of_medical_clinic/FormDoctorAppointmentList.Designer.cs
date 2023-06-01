@@ -114,7 +114,7 @@
             buttonShowDetails.Name = "buttonShowDetails";
             buttonShowDetails.Size = new Size(360, 65);
             buttonShowDetails.TabIndex = 47;
-            buttonShowDetails.Text = "[Show details]";
+            buttonShowDetails.Text = "Show details";
             buttonShowDetails.UseVisualStyleBackColor = false;
             buttonShowDetails.Click += buttonShowDetails_Click;
             // 

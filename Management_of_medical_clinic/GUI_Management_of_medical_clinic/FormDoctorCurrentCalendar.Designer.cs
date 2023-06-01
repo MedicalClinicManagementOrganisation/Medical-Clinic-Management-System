@@ -78,6 +78,7 @@
             labelPatient = new Label();
             panelStatus = new Panel();
             labelStatus = new Label();
+            button_cancelAppointment = new Button();
             panelMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewAppointments).BeginInit();
@@ -209,7 +210,7 @@
             // 
             labelDate.AutoSize = true;
             labelDate.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
-            labelDate.Location = new Point(1394, 126);
+            labelDate.Location = new Point(1385, 129);
             labelDate.Name = "labelDate";
             labelDate.Size = new Size(122, 30);
             labelDate.TabIndex = 28;
@@ -232,7 +233,7 @@
             labelTitleCalendarYear.AutoSize = true;
             labelTitleCalendarYear.BackColor = SystemColors.Control;
             labelTitleCalendarYear.Font = new Font("Segoe UI", 40F, FontStyle.Bold, GraphicsUnit.Point);
-            labelTitleCalendarYear.Location = new Point(937, 92);
+            labelTitleCalendarYear.Location = new Point(937, 95);
             labelTitleCalendarYear.Name = "labelTitleCalendarYear";
             labelTitleCalendarYear.Size = new Size(154, 72);
             labelTitleCalendarYear.TabIndex = 32;
@@ -270,7 +271,7 @@
             dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             dataGridViewAppointments.DefaultCellStyle = dataGridViewCellStyle3;
-            dataGridViewAppointments.Location = new Point(1133, 248);
+            dataGridViewAppointments.Location = new Point(1121, 248);
             dataGridViewAppointments.MultiSelect = false;
             dataGridViewAppointments.Name = "dataGridViewAppointments";
             dataGridViewAppointments.ReadOnly = true;
@@ -290,6 +291,7 @@
             dataGridViewAppointments.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridViewAppointments.Size = new Size(668, 783);
             dataGridViewAppointments.TabIndex = 33;
+            dataGridViewAppointments.CellClick += dataGridViewAppointments_CellClick;
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -515,7 +517,7 @@
             panelRoom2.BackColor = Color.White;
             panelRoom2.Controls.Add(labelRoom1);
             panelRoom2.Cursor = Cursors.PanSouth;
-            panelRoom2.Location = new Point(1133, 180);
+            panelRoom2.Location = new Point(1121, 180);
             panelRoom2.Name = "panelRoom2";
             panelRoom2.Size = new Size(113, 62);
             panelRoom2.TabIndex = 45;
@@ -551,7 +553,7 @@
             panelTime2.BackColor = Color.White;
             panelTime2.Controls.Add(labelTime1);
             panelTime2.Cursor = Cursors.PanSouth;
-            panelTime2.Location = new Point(1252, 180);
+            panelTime2.Location = new Point(1240, 180);
             panelTime2.Name = "panelTime2";
             panelTime2.Size = new Size(116, 62);
             panelTime2.TabIndex = 44;
@@ -561,7 +563,7 @@
             panelDoctor.BackColor = Color.White;
             panelDoctor.Controls.Add(labelPatient);
             panelDoctor.Cursor = Cursors.PanSouth;
-            panelDoctor.Location = new Point(1534, 180);
+            panelDoctor.Location = new Point(1522, 180);
             panelDoctor.Name = "panelDoctor";
             panelDoctor.Size = new Size(267, 62);
             panelDoctor.TabIndex = 43;
@@ -584,7 +586,7 @@
             panelStatus.BackColor = Color.White;
             panelStatus.Controls.Add(labelStatus);
             panelStatus.Cursor = Cursors.PanSouth;
-            panelStatus.Location = new Point(1374, 180);
+            panelStatus.Location = new Point(1362, 180);
             panelStatus.Name = "panelStatus";
             panelStatus.Size = new Size(154, 62);
             panelStatus.TabIndex = 46;
@@ -602,11 +604,23 @@
             labelStatus.Text = "Status";
             labelStatus.TextAlign = ContentAlignment.MiddleCenter;
             // 
+            // button_cancelAppointment
+            // 
+            button_cancelAppointment.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            button_cancelAppointment.Location = new Point(1799, 248);
+            button_cancelAppointment.Name = "button_cancelAppointment";
+            button_cancelAppointment.Size = new Size(113, 57);
+            button_cancelAppointment.TabIndex = 47;
+            button_cancelAppointment.Text = "Cancel Visit(s)";
+            button_cancelAppointment.UseVisualStyleBackColor = true;
+            button_cancelAppointment.Click += button_cancelAppointment_Click;
+            // 
             // FormDoctorCurrentCalendar
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1920, 1080);
+            Controls.Add(button_cancelAppointment);
             Controls.Add(panelStatus);
             Controls.Add(panelRoom2);
             Controls.Add(panelTime2);
@@ -708,5 +722,6 @@
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private DataGridViewTextBoxColumn Status;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private Button button_cancelAppointment;
     }
 }

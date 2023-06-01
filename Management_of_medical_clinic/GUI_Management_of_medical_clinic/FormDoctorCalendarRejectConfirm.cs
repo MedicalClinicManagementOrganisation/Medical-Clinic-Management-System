@@ -44,7 +44,7 @@ namespace GUI_Management_of_medical_clinic
             {
                 DoctorsPlanService.ChangeAppointmentStatusToRejected(listID, currentUser);
             }
-            CalendarService.ChangeCalendarStatusToAccepted(cal_id);
+            CalendarService.ChangeCalendarStatusToRejected(cal_id);
             MessageBox.Show("Calendar is rejected");
             Hide();
             Close();

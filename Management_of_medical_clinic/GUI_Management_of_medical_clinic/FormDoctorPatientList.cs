@@ -295,7 +295,7 @@ namespace GUI_Management_of_medical_clinic
                 {
                     if (app.IdDoctorsDayPlan == id_app)
                     {
-                        FormDoctorPatientVisitDetails visitDetails = new FormDoctorPatientVisitDetails(currentUser, app);
+                        FormDoctorPatientVisitDetails visitDetails = new FormDoctorPatientVisitDetails(currentUser, app, false);
                         visitDetails.Show();
                     }
                 }               
