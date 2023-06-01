@@ -133,11 +133,11 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 18.75F, FontStyle.Bold, GraphicsUnit.Point);
-            label4.Location = new Point(1163, 377);
+            label4.Location = new Point(1239, 393);
             label4.Name = "label4";
-            label4.Size = new Size(471, 35);
+            label4.Size = new Size(304, 35);
             label4.TabIndex = 55;
-            label4.Text = "Choose an employee to create an user:";
+            label4.Text = "Assign employee to user";
             // 
             // buttonAddNewUser
             // 

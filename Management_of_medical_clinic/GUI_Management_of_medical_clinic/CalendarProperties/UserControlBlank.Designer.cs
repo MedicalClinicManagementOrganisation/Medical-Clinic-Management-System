@@ -47,7 +47,7 @@
             BackColor = Color.WhiteSmoke;
             Controls.Add(labelNumberOfDay);
             Name = "UserControlBlank";
-            Size = new Size(165, 130);
+            Size = new Size(105, 143);
             Load += UserControlBlank_Load;
             ResumeLayout(false);
             PerformLayout();

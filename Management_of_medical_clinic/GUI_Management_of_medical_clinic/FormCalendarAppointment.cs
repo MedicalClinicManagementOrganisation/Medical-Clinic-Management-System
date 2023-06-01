@@ -1,3 +1,4 @@
+using Console_Management_of_medical_clinic.Data.Enums;
 using Console_Management_of_medical_clinic.Logic;
 using Console_Management_of_medical_clinic.Model;
 using System.Globalization;
@@ -127,7 +128,7 @@ namespace GUI_Management_of_medical_clinic
 
             foreach (DoctorsDayPlanModel appointment in selectedAppointments)
             {
-                if (appointment.PatientId == null && appointment.IsActive == true)
+                if (appointment.PatientId == null  && appointment.Status == EnumAppointmentStatus.Accepted)
                 {
                     AddItemToDataGridView(appointment);
                     displayListInDataGridView.Add(appointment);
@@ -158,7 +159,7 @@ namespace GUI_Management_of_medical_clinic
         {
 
             DateTime startOfTheMonth = new DateTime(date.Year, date.Month, 1);
-
+            
             int days = DateTime.DaysInMonth(date.Year, date.Month);
 
 

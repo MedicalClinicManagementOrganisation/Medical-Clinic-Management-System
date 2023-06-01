@@ -29,14 +29,12 @@
         private void InitializeComponent()
         {
             labelTitle = new Label();
-            label3 = new Label();
             label2 = new Label();
             label1 = new Label();
             buttonSaveUser = new Button();
             textBoxUsername = new TextBox();
             buttonChangePassword = new Button();
             comboBoxRole = new ComboBox();
-            comboBoxActive = new ComboBox();
             label6 = new Label();
             listBoxEmployees = new ListBox();
             panel2 = new Panel();
@@ -56,16 +54,6 @@
             labelTitle.Size = new Size(208, 45);
             labelTitle.TabIndex = 63;
             labelTitle.Text = "User edition";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 18.75F, FontStyle.Bold, GraphicsUnit.Point);
-            label3.Location = new Point(860, 534);
-            label3.Name = "label3";
-            label3.Size = new Size(140, 35);
-            label3.TabIndex = 62;
-            label3.Text = "Is it Active";
             // 
             // label2
             // 
@@ -129,26 +117,15 @@
             comboBoxRole.TabIndex = 69;
             comboBoxRole.SelectedIndexChanged += comboBoxRole_SelectedIndexChanged;
             // 
-            // comboBoxActive
-            // 
-            comboBoxActive.Font = new Font("Segoe UI", 18.75F, FontStyle.Regular, GraphicsUnit.Point);
-            comboBoxActive.FormattingEnabled = true;
-            comboBoxActive.Items.AddRange(new object[] { "Active", "Disactive" });
-            comboBoxActive.Location = new Point(1032, 531);
-            comboBoxActive.Name = "comboBoxActive";
-            comboBoxActive.Size = new Size(187, 43);
-            comboBoxActive.TabIndex = 70;
-            comboBoxActive.SelectedIndexChanged += comboBoxActive_SelectedIndexChanged;
-            // 
             // label6
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 18.75F, FontStyle.Bold, GraphicsUnit.Point);
-            label6.Location = new Point(1178, 334);
+            label6.Location = new Point(1249, 328);
             label6.Name = "label6";
-            label6.Size = new Size(471, 35);
+            label6.Size = new Size(327, 35);
             label6.TabIndex = 72;
-            label6.Text = "Choose an employee to create an user:";
+            label6.Text = "Assign different employee";
             // 
             // listBoxEmployees
             // 
@@ -216,11 +193,9 @@
             Controls.Add(panel2);
             Controls.Add(label6);
             Controls.Add(listBoxEmployees);
-            Controls.Add(comboBoxActive);
             Controls.Add(comboBoxRole);
             Controls.Add(buttonChangePassword);
             Controls.Add(labelTitle);
-            Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(buttonSaveUser);
@@ -237,14 +212,12 @@
 
         #endregion
         private Label labelTitle;
-        private Label label3;
         private Label label2;
         private Label label1;
         private Button buttonSaveUser;
         private TextBox textBoxUsername;
         private Button buttonChangePassword;
         private ComboBox comboBoxRole;
-        private ComboBox comboBoxActive;
         private Label label6;
         private ListBox listBoxEmployees;
         private Panel panel2;

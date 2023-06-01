@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             dataGridViewOffices = new DataGridView();
             buttonLogOut = new Button();
             panel1 = new Panel();
@@ -35,6 +36,7 @@
             buttonAddOffice = new Button();
             buttonEditOffice = new Button();
             buttonRemoveOffice = new Button();
+            panel2 = new Panel();
             ((System.ComponentModel.ISupportInitialize)dataGridViewOffices).BeginInit();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -45,16 +47,24 @@
             dataGridViewOffices.AllowUserToAddRows = false;
             dataGridViewOffices.AllowUserToDeleteRows = false;
             dataGridViewOffices.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewOffices.BackgroundColor = SystemColors.Info;
+            dataGridViewOffices.BackgroundColor = SystemColors.ButtonHighlight;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dataGridViewOffices.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dataGridViewOffices.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewOffices.GridColor = SystemColors.Info;
-            dataGridViewOffices.Location = new Point(647, 148);
+            dataGridViewOffices.GridColor = SystemColors.GrayText;
+            dataGridViewOffices.Location = new Point(311, 65);
             dataGridViewOffices.Name = "dataGridViewOffices";
             dataGridViewOffices.ReadOnly = true;
             dataGridViewOffices.RowHeadersVisible = false;
             dataGridViewOffices.RowTemplate.Height = 25;
             dataGridViewOffices.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewOffices.Size = new Size(1077, 680);
+            dataGridViewOffices.Size = new Size(1612, 1016);
             dataGridViewOffices.TabIndex = 23;
             // 
             // buttonLogOut
@@ -136,12 +146,21 @@
             buttonRemoveOffice.UseVisualStyleBackColor = false;
             buttonRemoveOffice.Click += buttonRemoveOffice_Click;
             // 
+            // panel2
+            // 
+            panel2.BackColor = Color.SteelBlue;
+            panel2.Location = new Point(311, 0);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(1615, 67);
+            panel2.TabIndex = 40;
+            // 
             // FormOfficeList
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             ClientSize = new Size(1920, 1080);
+            Controls.Add(panel2);
             Controls.Add(panel1);
             Controls.Add(dataGridViewOffices);
             FormBorderStyle = FormBorderStyle.None;
@@ -165,5 +184,6 @@
         private Button buttonAddOffice;
         private Button buttonEditOffice;
         private Button buttonRemoveOffice;
+        private Panel panel2;
     }
 }

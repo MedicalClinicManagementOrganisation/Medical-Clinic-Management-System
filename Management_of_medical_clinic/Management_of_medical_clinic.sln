@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Employee.UnitTests", "Emplo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicalClinicTest", "MedicalClinicTest\MedicalClinicTest.csproj", "{A1B4465E-CF4E-4ECA-97C1-E24375B34F07}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Doctor.UnitTests", "DoctorTest\Doctor.UnitTests.csproj", "{27ED0575-2429-4A40-99B8-CEB257816996}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,12 +37,17 @@ Global
 		{A1B4465E-CF4E-4ECA-97C1-E24375B34F07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1B4465E-CF4E-4ECA-97C1-E24375B34F07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1B4465E-CF4E-4ECA-97C1-E24375B34F07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27ED0575-2429-4A40-99B8-CEB257816996}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27ED0575-2429-4A40-99B8-CEB257816996}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27ED0575-2429-4A40-99B8-CEB257816996}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27ED0575-2429-4A40-99B8-CEB257816996}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{AEC47ED4-B940-4A50-9313-BB9AE53E9BD6} = {1117D911-973E-4D7F-A979-8990674C3475}
+		{27ED0575-2429-4A40-99B8-CEB257816996} = {1117D911-973E-4D7F-A979-8990674C3475}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {61515E0A-2A14-49FC-BCE3-AF86A62585D1}

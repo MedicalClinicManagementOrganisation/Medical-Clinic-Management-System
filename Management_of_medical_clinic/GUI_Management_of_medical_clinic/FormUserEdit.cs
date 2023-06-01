@@ -37,11 +37,10 @@ namespace GUI_Management_of_medical_clinic
         {
             textBoxUsername.Text = user.Username;
             comboBoxRole.SelectedItem = user.Role.ToString();
-            comboBoxActive.SelectedItem = user.IsActive ? "Active" : "Disactive";
 
             foreach (EmployeeModel employee in EmployeeService.GetEmployeesData())
             {
-                if (!UserService.CheckIfIdIsAlreadyUsed(employee.IdEmployee) || employee.IdEmployee == user.IdEmployee)
+                if (!UserService.CheckIfIdIsAlreadyUsedByEmployeeId(employee.IdEmployee) || employee.IdEmployee == user.IdEmployee)
                 {
                     listBoxEmployees.Items.Add(employee.IdEmployee + " " + employee.FirstName + " " + employee.LastName);
                 }
@@ -54,9 +53,9 @@ namespace GUI_Management_of_medical_clinic
         public void checkIfRequiredFilled()
         {
             buttonSaveUser.Enabled = false;
-            if (textBoxUsername.Text.Trim().Length > 0 && listBoxEmployees.SelectedItem != null && comboBoxRole.SelectedItem != null && comboBoxActive.SelectedItem != null)
+            if (textBoxUsername.Text.Trim().Length > 0 && listBoxEmployees.SelectedItem != null && comboBoxRole.SelectedItem != null)
             {
-                if ((listBoxEmployees.Items[0].ToString() != "There are no employees without a user.") && (user.IdEmployee != int.Parse(Regex.Match(listBoxEmployees.SelectedItem.ToString(), @"^\d+").Value) || !comboBoxRole.SelectedItem.ToString().Equals(user.Role.ToString()) || !comboBoxActive.SelectedItem.Equals(user.IsActive ? "Active" : "Disactive")))
+                if ((listBoxEmployees.Items[0].ToString() != "There are no employees without a user.") && (user.IdEmployee != int.Parse(Regex.Match(listBoxEmployees.SelectedItem.ToString(), @"^\d+").Value) || !comboBoxRole.SelectedItem.ToString().Equals(user.Role.ToString())))
                 {
                     buttonSaveUser.Enabled = true;
                 }
@@ -65,7 +64,7 @@ namespace GUI_Management_of_medical_clinic
 
         private void buttonSaveUser_Click(object sender, EventArgs e)
         {
-            UserService.EditUser(user.IdUser, textBoxUsername.Text, (EnumUserRoles)Enum.Parse(typeof(EnumUserRoles), comboBoxRole.SelectedItem.ToString()), comboBoxActive.SelectedItem == "Active" ? true : false, int.Parse(Regex.Match(listBoxEmployees.SelectedItem.ToString(), @"^\d+").Value));
+            UserService.EditUser(user.IdUser, textBoxUsername.Text, (EnumUserRoles)Enum.Parse(typeof(EnumUserRoles), comboBoxRole.SelectedItem.ToString()), user.IsActive, int.Parse(Regex.Match(listBoxEmployees.SelectedItem.ToString(), @"^\d+").Value));
 
             MessageBox.Show("Success, data is saved.");
 
@@ -77,7 +76,7 @@ namespace GUI_Management_of_medical_clinic
 
         private void buttonClose_Click(object sender, EventArgs e)
         {
-            if (user.IdEmployee != int.Parse(Regex.Match(listBoxEmployees.SelectedItem.ToString(), @"^\d+").Value) || !comboBoxRole.SelectedItem.ToString().Equals(user.Role.ToString()) || !comboBoxActive.SelectedItem.Equals(user.IsActive ? "Active" : "Disactive"))
+            if (user.IdEmployee != int.Parse(Regex.Match(listBoxEmployees.SelectedItem.ToString(), @"^\d+").Value) || !comboBoxRole.SelectedItem.ToString().Equals(user.Role.ToString()))
             {
                 DialogResult result = MessageBox.Show("Are you sure you want to cancel the operation? ", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.No)
@@ -126,9 +125,7 @@ namespace GUI_Management_of_medical_clinic
         private void buttonChangeStatus_Click(object sender, EventArgs e)
         {
             FormChangeStatusOfUser formChange = new FormChangeStatusOfUser(user, currentUser);
-            Hide();
             formChange.ShowDialog();
-            Close();
         }
     }
 }

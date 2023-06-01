@@ -23,6 +23,11 @@ namespace Console_Management_of_medical_clinic.Logic
             return users;
         }
 
+        private void checkIfAdmin()
+        {
+
+        }
+
         public static void AddUser(string username, string password, EnumUserRoles role, bool isActive, int employeeId)
         {
             //a method to add new User to Database
@@ -82,7 +87,7 @@ namespace Console_Management_of_medical_clinic.Logic
             return false;
         }
 
-        public static bool CheckIfIdIsAlreadyUsed(int id)
+        public static bool CheckIfIdIsAlreadyUsedByEmployeeId(int id)
         {
             return GetUsersData().Any(user => user.IdEmployee == id);
         }
@@ -131,6 +136,11 @@ namespace Console_Management_of_medical_clinic.Logic
                 }
             }
             return null;
+        }
+
+        public static UserModel GetUserByUsername(string username)
+        {
+            return GetUsersData().FirstOrDefault(x => x.Username == username);
         }
     }
         

@@ -159,5 +159,10 @@ namespace Console_Management_of_medical_clinic.Model
             return LastName + " " + FirstName;
         }
 
+        public string FullNameWithId()
+        {
+            return IdEmployee + "-" + FirstName + " " + LastName;
+        }   
+
     }
 }

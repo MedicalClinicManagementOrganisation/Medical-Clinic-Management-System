@@ -29,21 +29,20 @@ namespace GUI_Management_of_medical_clinic
 
         public void LoadOfficeData()
         {
-            
+
             dataGridViewOffices.DataSource = null;
 
             dataGridViewOffices.Rows.Clear();
 
             foreach (OfficeModel office in OfficeService.GetOfficesData())
             {
-                dataGridViewOffices.Rows.Add(office.IdOffice, office.Number, office.Status.ToString(), office.Info, SpecializationService.GetSpecializationById(office.IdSpecialization).Name);
+                dataGridViewOffices.Rows.Add(office.Number, office.Status.ToString(), office.Info, SpecializationService.GetSpecializationById(office.IdSpecialization).Name);
             }
         }
 
         private void FormOfficeList_Load(object sender, EventArgs e)
         {
             dataGridViewOffices.Rows.Clear();
-            dataGridViewOffices.Columns.Add("IdOffice", "Id of Office");
             dataGridViewOffices.Columns.Add("Number", "Number");
             dataGridViewOffices.Columns.Add("Status", "Status");
             dataGridViewOffices.Columns.Add("Info", "Info");
@@ -70,7 +69,13 @@ namespace GUI_Management_of_medical_clinic
 
         private void buttonEditOffice_Click(object sender, EventArgs e)
         {
-            FormOfficeEdit officeEdit = new FormOfficeEdit(currentUser, OfficeService.GetOfficeById((int)dataGridViewOffices.CurrentRow.Cells[0].Value));
+            if (dataGridViewOffices.SelectedRows.Count != 1)
+            {
+                MessageBox.Show("You can edit only one office at a time. Please select one office from the list.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            FormOfficeEdit officeEdit = new FormOfficeEdit(currentUser, OfficeService.GetOfficeByInfo("Room: " + dataGridViewOffices.CurrentRow.Cells[0].Value + ", " + dataGridViewOffices.CurrentRow.Cells[2].Value));  //"Room: " + office.Number.ToString() + ", " + office.Info
             Hide();
             officeEdit.ShowDialog();
             Close();
@@ -78,9 +83,17 @@ namespace GUI_Management_of_medical_clinic
 
         private void buttonRemoveOffice_Click(object sender, EventArgs e)
         {
-            if (!OfficeService.CheckIfOfficeIsAppointed((int)dataGridViewOffices.CurrentRow.Cells[0].Value))
+            if (dataGridViewOffices.SelectedRows.Count != 1)
             {
-                FormDeletingConfirmation delete = new FormDeletingConfirmation(OfficeService.GetOfficeById((int)dataGridViewOffices.CurrentRow.Cells[0].Value));
+                MessageBox.Show("You can remove only one office at a time. Please select one office from the list.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            OfficeModel officeToRemove = OfficeService.GetOfficeByInfo("Room: " + dataGridViewOffices.CurrentRow.Cells[0].Value + ", " + dataGridViewOffices.CurrentRow.Cells[2].Value);
+
+            if (!OfficeService.CheckIfOfficeIsAppointed(officeToRemove.IdOffice))
+            {
+                FormDeletingConfirmation delete = new FormDeletingConfirmation(officeToRemove);
                 delete.ShowDialog();
                 LoadOfficeData();
             }

@@ -48,7 +48,7 @@
             BackColor = Color.White;
             Controls.Add(labelNumberOfDay);
             Name = "UserControlDay";
-            Size = new Size(165, 130);
+            Size = new Size(105, 143);
             Load += UserControlDay_Load;
             Leave += UserControlDay_Leave;
             MouseClick += UserControlDay_MouseClick;

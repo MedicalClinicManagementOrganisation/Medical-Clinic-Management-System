@@ -8,7 +8,7 @@ namespace Console_Management_of_medical_clinic.Data.Enums
 {
     public enum EnumUserRoles
     {
-        Administrator =1,
-        Employee =2
+        Administrator = 1,
+        Employee = 2
     }
 }

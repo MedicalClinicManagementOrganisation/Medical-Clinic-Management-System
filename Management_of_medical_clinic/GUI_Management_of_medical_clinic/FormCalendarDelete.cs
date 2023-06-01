@@ -34,7 +34,7 @@ namespace GUI_Management_of_medical_clinic
             }
             catch
             {
-                MessageBox.Show(CalendarService.LastErrorMessage);
+                MessageBox.Show(CalendarService.LastErrorMessage, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

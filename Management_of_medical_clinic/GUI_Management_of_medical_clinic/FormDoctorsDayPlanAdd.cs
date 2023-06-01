@@ -121,6 +121,14 @@ namespace GUI_Management_of_medical_clinic
                 {                    
                     try
                     {
+                        string message;
+
+                        if(!OfficeService.CheckIfOfficeIsFree(parsedEmployeeId, calendarId, selectedDay, parsedOfficeId, checkedTerms, out message))
+                        {
+                            MessageBox.Show(message);
+                            return;
+                        }
+
                         MessageBox.Show(DoctorsPlanService.AddPlans(checkedTerms, selectedDay, calendarId, parsedEmployeeId, parsedOfficeId));
 
                         FormDoctorsPlanCalendar formCalendar = new FormDoctorsPlanCalendar(currentEmployee);

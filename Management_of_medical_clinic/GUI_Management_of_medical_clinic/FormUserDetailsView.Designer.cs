@@ -36,13 +36,13 @@
             textBoxRole = new TextBox();
             textBoxUsername = new TextBox();
             labelTitle = new Label();
-            label4 = new Label();
-            textBoxUserId = new TextBox();
-            label5 = new Label();
-            textBoxEmployeeId = new TextBox();
             panel2 = new Panel();
             pictureBox1 = new PictureBox();
             buttonCancel = new Button();
+            labelfirstName = new Label();
+            textBoxFirstName = new TextBox();
+            labelLastName = new Label();
+            textBoxLastName = new TextBox();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
@@ -51,7 +51,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 18.75F, FontStyle.Bold, GraphicsUnit.Point);
-            label3.Location = new Point(928, 548);
+            label3.Location = new Point(928, 591);
             label3.Name = "label3";
             label3.Size = new Size(140, 35);
             label3.TabIndex = 48;
@@ -61,7 +61,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 18.75F, FontStyle.Bold, GraphicsUnit.Point);
-            label2.Location = new Point(928, 501);
+            label2.Location = new Point(928, 544);
             label2.Name = "label2";
             label2.Size = new Size(66, 35);
             label2.TabIndex = 47;
@@ -71,7 +71,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 18.75F, FontStyle.Bold, GraphicsUnit.Point);
-            label1.Location = new Point(928, 454);
+            label1.Location = new Point(928, 497);
             label1.Name = "label1";
             label1.Size = new Size(133, 35);
             label1.TabIndex = 46;
@@ -80,7 +80,7 @@
             // buttonEditUser
             // 
             buttonEditUser.Font = new Font("Segoe UI", 18.75F, FontStyle.Bold, GraphicsUnit.Point);
-            buttonEditUser.Location = new Point(996, 640);
+            buttonEditUser.Location = new Point(996, 683);
             buttonEditUser.Name = "buttonEditUser";
             buttonEditUser.Size = new Size(220, 60);
             buttonEditUser.TabIndex = 44;
@@ -91,7 +91,7 @@
             // textBoxActive
             // 
             textBoxActive.Font = new Font("Segoe UI", 18.75F, FontStyle.Regular, GraphicsUnit.Point);
-            textBoxActive.Location = new Point(1092, 545);
+            textBoxActive.Location = new Point(1092, 588);
             textBoxActive.Name = "textBoxActive";
             textBoxActive.ReadOnly = true;
             textBoxActive.Size = new Size(187, 41);
@@ -100,7 +100,7 @@
             // textBoxRole
             // 
             textBoxRole.Font = new Font("Segoe UI", 18.75F, FontStyle.Regular, GraphicsUnit.Point);
-            textBoxRole.Location = new Point(1092, 498);
+            textBoxRole.Location = new Point(1092, 541);
             textBoxRole.Name = "textBoxRole";
             textBoxRole.ReadOnly = true;
             textBoxRole.Size = new Size(187, 41);
@@ -109,7 +109,7 @@
             // textBoxUsername
             // 
             textBoxUsername.Font = new Font("Segoe UI", 18.75F, FontStyle.Regular, GraphicsUnit.Point);
-            textBoxUsername.Location = new Point(1092, 451);
+            textBoxUsername.Location = new Point(1092, 494);
             textBoxUsername.Name = "textBoxUsername";
             textBoxUsername.ReadOnly = true;
             textBoxUsername.Size = new Size(187, 41);
@@ -124,44 +124,6 @@
             labelTitle.Size = new Size(240, 45);
             labelTitle.TabIndex = 49;
             labelTitle.Text = "User overview";
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 18.75F, FontStyle.Bold, GraphicsUnit.Point);
-            label4.Location = new Point(829, 377);
-            label4.Name = "label4";
-            label4.Size = new Size(130, 35);
-            label4.TabIndex = 51;
-            label4.Text = "Id of User";
-            // 
-            // textBoxUserId
-            // 
-            textBoxUserId.Font = new Font("Segoe UI", 18.75F, FontStyle.Regular, GraphicsUnit.Point);
-            textBoxUserId.Location = new Point(965, 374);
-            textBoxUserId.Name = "textBoxUserId";
-            textBoxUserId.ReadOnly = true;
-            textBoxUserId.Size = new Size(59, 41);
-            textBoxUserId.TabIndex = 50;
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI", 18.75F, FontStyle.Bold, GraphicsUnit.Point);
-            label5.Location = new Point(1087, 377);
-            label5.Name = "label5";
-            label5.Size = new Size(192, 35);
-            label5.TabIndex = 53;
-            label5.Text = "Id of Employee";
-            // 
-            // textBoxEmployeeId
-            // 
-            textBoxEmployeeId.Font = new Font("Segoe UI", 18.75F, FontStyle.Regular, GraphicsUnit.Point);
-            textBoxEmployeeId.Location = new Point(1285, 374);
-            textBoxEmployeeId.Name = "textBoxEmployeeId";
-            textBoxEmployeeId.ReadOnly = true;
-            textBoxEmployeeId.Size = new Size(59, 41);
-            textBoxEmployeeId.TabIndex = 54;
             // 
             // panel2
             // 
@@ -198,17 +160,55 @@
             buttonCancel.UseVisualStyleBackColor = false;
             buttonCancel.Click += buttonClose_Click;
             // 
+            // labelfirstName
+            // 
+            labelfirstName.AutoSize = true;
+            labelfirstName.Font = new Font("Segoe UI", 18.75F, FontStyle.Bold, GraphicsUnit.Point);
+            labelfirstName.Location = new Point(898, 380);
+            labelfirstName.Name = "labelfirstName";
+            labelfirstName.Size = new Size(138, 35);
+            labelfirstName.TabIndex = 63;
+            labelfirstName.Text = "First name";
+            // 
+            // textBoxFirstName
+            // 
+            textBoxFirstName.Font = new Font("Segoe UI", 18.75F, FontStyle.Regular, GraphicsUnit.Point);
+            textBoxFirstName.Location = new Point(1062, 377);
+            textBoxFirstName.Name = "textBoxFirstName";
+            textBoxFirstName.ReadOnly = true;
+            textBoxFirstName.Size = new Size(251, 41);
+            textBoxFirstName.TabIndex = 62;
+            // 
+            // labelLastName
+            // 
+            labelLastName.AutoSize = true;
+            labelLastName.Font = new Font("Segoe UI", 18.75F, FontStyle.Bold, GraphicsUnit.Point);
+            labelLastName.Location = new Point(898, 427);
+            labelLastName.Name = "labelLastName";
+            labelLastName.Size = new Size(134, 35);
+            labelLastName.TabIndex = 65;
+            labelLastName.Text = "Last name";
+            // 
+            // textBoxLastName
+            // 
+            textBoxLastName.Font = new Font("Segoe UI", 18.75F, FontStyle.Regular, GraphicsUnit.Point);
+            textBoxLastName.Location = new Point(1062, 424);
+            textBoxLastName.Name = "textBoxLastName";
+            textBoxLastName.ReadOnly = true;
+            textBoxLastName.Size = new Size(251, 41);
+            textBoxLastName.TabIndex = 64;
+            // 
             // FormUserDetailsView
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Info;
             ClientSize = new Size(1920, 1080);
+            Controls.Add(labelLastName);
+            Controls.Add(textBoxLastName);
+            Controls.Add(labelfirstName);
+            Controls.Add(textBoxFirstName);
             Controls.Add(panel2);
-            Controls.Add(textBoxEmployeeId);
-            Controls.Add(label5);
-            Controls.Add(label4);
-            Controls.Add(textBoxUserId);
             Controls.Add(labelTitle);
             Controls.Add(label3);
             Controls.Add(label2);
@@ -236,12 +236,12 @@
         private TextBox textBoxRole;
         private TextBox textBoxUsername;
         private Label labelTitle;
-        private Label label4;
-        private TextBox textBoxUserId;
-        private Label label5;
-        private TextBox textBoxEmployeeId;
         private Panel panel2;
         private PictureBox pictureBox1;
         private Button buttonCancel;
+        private Label labelfirstName;
+        private TextBox textBoxFirstName;
+        private Label labelLastName;
+        private TextBox textBoxLastName;
     }
 }

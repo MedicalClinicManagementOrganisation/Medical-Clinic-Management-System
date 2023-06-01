@@ -1,5 +1,7 @@
-﻿using Console_Management_of_medical_clinic.Logic;
+﻿using Console_Management_of_medical_clinic.Data.Enums;
+using Console_Management_of_medical_clinic.Logic;
 using Console_Management_of_medical_clinic.Model;
+using System.Globalization;
 
 namespace GUI_Management_of_medical_clinic
 {
@@ -14,7 +16,15 @@ namespace GUI_Management_of_medical_clinic
         {
             this.currentUser = currentUser;
             InitializeComponent();
+            loadDataGridView();
+        }
+
+        public void loadDataGridView()
+        {
+            //dataGridViewCalendars.Rows.Clear();
             dataGridViewCalendars.DataSource = _calendarService.GetAll();
+            dataGridViewCalendars.Columns["NumberOfDoctors"].HeaderText = "Number of doctors";
+            dataGridViewCalendars.Columns["NumberOfAcceptedDoctors"].HeaderText = "Number of accepted doctors";
             comboBoxStatus.DataSource = statusList;
             comboBoxStatus.SelectedIndex = 2;
         }
@@ -93,17 +103,67 @@ namespace GUI_Management_of_medical_clinic
 
         }
 
-        private void buttonEditCalendar_Click(object sender, EventArgs e)
+        private void button_Clear_Click(object sender, EventArgs e)
         {
-            if ((bool)dataGridViewCalendars.CurrentRow.Cells[2].Value)
+            List<DoctorsDayPlanModel> doctorsDayPlanModels = CalendarAppointmentService.GetAppointmentsWithPatients();
+
+            int count = 0;
+
+            foreach (DoctorsDayPlanModel doctorsDayPlanModel in doctorsDayPlanModels)
             {
-                MessageBox.Show("It is not possible to change active calendars. Check if the selected calendar is right.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                DateTime date = CalendarService.GetDateByIdCalendar((int)doctorsDayPlanModel.IdCalendar, doctorsDayPlanModel.IdDay);
+                string term = AppointmentService.GetTermByTermId((int)doctorsDayPlanModel.IdOfTerm);
+                TimeSpan time = TimeSpan.ParseExact(term, "hh\\:mm", null);
+
+                if (date <= DateTime.Now.Date && time <= DateTime.Now.TimeOfDay && (doctorsDayPlanModel.Status == EnumAppointmentStatus.Accepted ||
+                    doctorsDayPlanModel.Status == EnumAppointmentStatus.Scheduled || doctorsDayPlanModel.Status == EnumAppointmentStatus.Confirmed))
+                {
+                    FormConfirmCancelAppointment clear = new FormConfirmCancelAppointment("clear from appointment", currentUser, doctorsDayPlanModel);
+                    clear.ShowDialog();
+                }
+                else
+                {
+                    count++;
+                }
+            }
+
+            if (count == doctorsDayPlanModels.Count)
+            {
+                string msg1 = "The calendars are already cleared.";
+                FormMessage FormMessage1 = new FormMessage(msg1);
+                FormMessage1.ShowDialog();
+                return;
+            }
+        }
+
+        private void buttonActivate_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonActivateCalendar_Click(object sender, EventArgs e)
+        {
+            CalendarModel selectedCalendar = CalendarService.GetCalendarById((int)dataGridViewCalendars.CurrentRow.Cells[0].Value);
+            if (selectedCalendar.Active == true)
+            {
+                MessageBox.Show("Calendar is already active");
                 return;
             }
 
-            FormCalendarEdit formCalendar = new FormCalendarEdit(currentUser, CalendarService.GetCalendarById((int)dataGridViewCalendars.CurrentRow.Cells[0].Value), new FormCalendarsList(currentUser));
-            formCalendar.ShowDialog();
-            Close();
+
+            if (selectedCalendar.NumberOfAcceptedDoctors >= selectedCalendar.NumberOfDoctors)
+            {
+                CalendarService.ActivateCalendar(selectedCalendar.IdCalendar);
+                MessageBox.Show("Success, data is saved.");
+                loadDataGridView();
+                return;
+            }
+            MessageBox.Show("All doctors must approve their plans to activte calendar.");
+        }
+
+        private void textBoxDateReference_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

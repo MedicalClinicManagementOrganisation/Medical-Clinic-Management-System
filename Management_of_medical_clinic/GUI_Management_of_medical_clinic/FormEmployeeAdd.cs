@@ -18,7 +18,7 @@ namespace GUI_Management_of_medical_clinic
     {
         EmployeeModel currentEmployee;
         EmployeeModel newEmployee;
-        
+
         public FormEmployeeAdd(EmployeeModel currentE)
         {
             InitializeComponent();
@@ -89,8 +89,8 @@ namespace GUI_Management_of_medical_clinic
 
             EnumSex enumSex = (EnumSex)Enum.Parse(typeof(EnumSex), comboBoxSex.SelectedItem.ToString());
             EnumEmployeeRoles enumRole = (EnumEmployeeRoles)Enum.Parse(typeof(EnumEmployeeRoles), comboBoxRole.SelectedItem.ToString());
-       
-            EmployeeModel newEmployee = new EmployeeModel(textBoxFirstName.Text, textBoxLastName.Text, textBoxPESEL.Text, dateTimePickerDate.Text, 
+
+            EmployeeModel newEmployee = new EmployeeModel(textBoxFirstName.Text, textBoxLastName.Text, textBoxPESEL.Text, dateTimePickerDate.Text,
                 textBoxAddress.Text, textBoxEmail.Text, textBoxPhone.Text, enumSex, enumRole, 1, true);
 
             FormEmployeeAddUser employeeAddUser = new FormEmployeeAddUser(currentEmployee, newEmployee);

@@ -104,7 +104,7 @@
             label1.Name = "label1";
             label1.Size = new Size(426, 25);
             label1.TabIndex = 30;
-            label1.Text = "Confirm cancelling appointment. Input password:";
+            label1.Text = "Confirm appointment cancelling. Input password:";
             // 
             // textBoxPassword
             // 
@@ -135,6 +135,7 @@
             Name = "FormConfirmCancelAppointment";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "FormConfirmCancelAppointment";
+            Load += FormConfirmCancelAppointment_Load;
             panel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();

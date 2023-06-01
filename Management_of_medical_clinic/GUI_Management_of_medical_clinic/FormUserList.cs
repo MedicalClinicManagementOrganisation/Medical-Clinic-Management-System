@@ -28,7 +28,7 @@ namespace GUI_Management_of_medical_clinic
 
             foreach (UserModel user in UserService.GetUsersData())
             {
-                dataGridViewUsers.Rows.Add(user.IdUser, user.Username, user.Role, (user.IsActive == true) ? "Active" : "Not active");
+                dataGridViewUsers.Rows.Add(user.Username, EmployeeService.GetEmployeeByUserId(user).FirstName, EmployeeService.GetEmployeeByUserId(user).LastName, user.Role, (user.IsActive == true) ? "Active" : "Not active");
                 if (user.IdEmployee == currentUser.IdEmployee) { currentUser = EmployeeService.GetEmployeeByUserId(user); }     // it makes user always refreshed
             }
 
@@ -41,7 +41,7 @@ namespace GUI_Management_of_medical_clinic
             dataGridViewUsers.Rows.Clear();
             foreach (UserModel user in filteredUsers)
             {
-                dataGridViewUsers.Rows.Add(user.IdUser, user.Username, user.Role, (user.IsActive == true) ? "Active" : "Not Active");
+                dataGridViewUsers.Rows.Add(user.Username, EmployeeService.GetEmployeeByUserId(user).FirstName, EmployeeService.GetEmployeeByUserId(user).LastName, user.Role, (user.IsActive == true) ? "Active" : "Not Active");
             }
 
         }
@@ -49,10 +49,10 @@ namespace GUI_Management_of_medical_clinic
         private void FormUserList_Load(object sender, EventArgs e)
         {
             dataGridViewUsers.Rows.Clear();
-            dataGridViewUsers.Columns.Add("IdUser", "Id of user");
+
             dataGridViewUsers.Columns.Add("Username", "Username");
-            //dataGridViewUsers.Columns.Add("FirstName", "First name");
-            //dataGridViewUsers.Columns.Add("LastName", "Last name");
+            dataGridViewUsers.Columns.Add("FirstName", "First name");
+            dataGridViewUsers.Columns.Add("LastName", "Last name");
             dataGridViewUsers.Columns.Add("Role", "Role");
             dataGridViewUsers.Columns.Add("IsActive", "Is active?");
 
@@ -75,7 +75,14 @@ namespace GUI_Management_of_medical_clinic
 
         private void buttonReviewUser_Click(object sender, EventArgs e)
         {
-            FormUserDetailsView userDetailsView = new FormUserDetailsView(UserService.GetUserById((int)dataGridViewUsers.CurrentRow.Cells[0].Value), currentUser);
+            if (dataGridViewUsers.SelectedRows.Count != 1)
+            {
+                MessageBox.Show("You can view data of the only one user at a time. Please select one user from the list.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+
+            }
+
+            FormUserDetailsView userDetailsView = new FormUserDetailsView(UserService.GetUserByUsername(dataGridViewUsers.CurrentRow.Cells[0].Value.ToString()), currentUser);
             Hide();
             userDetailsView.ShowDialog();
             Close();
@@ -83,7 +90,14 @@ namespace GUI_Management_of_medical_clinic
 
         private void buttonEditUser_Click(object sender, EventArgs e)
         {
-            FormUserEdit formUser = new FormUserEdit(UserService.GetUserById((int)dataGridViewUsers.CurrentRow.Cells[0].Value), currentUser);
+            if (dataGridViewUsers.SelectedRows.Count != 1)
+            {
+                MessageBox.Show("You can edit data of the only one user at a time. Please select one user from the list.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+
+            }
+
+            FormUserEdit formUser = new FormUserEdit(UserService.GetUserByUsername(dataGridViewUsers.CurrentRow.Cells[0].Value.ToString()), currentUser);
             Hide();
             formUser.ShowDialog();
             Close();
@@ -93,7 +107,7 @@ namespace GUI_Management_of_medical_clinic
         {
             if (dataGridViewUsers.SelectedRows.Count != 1)
             {
-                MessageBox.Show("Select one user from list!");
+                MessageBox.Show("You can deactivate only one user at a time. Please select one user from the list.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
 
             }
@@ -105,8 +119,7 @@ namespace GUI_Management_of_medical_clinic
                 return;
             }
 
-            int IdUser = (int)dataGridViewUsers.Rows[rowIndex].Cells[0].Value;
-            UserModel user = UserService.GetUserById(IdUser);
+            UserModel user = UserService.GetUserByUsername(dataGridViewUsers.CurrentRow.Cells[0].Value.ToString());
             FormChangeStatusOfUser deactivate = new FormChangeStatusOfUser(user, currentUser);
             deactivate.ShowDialog();
         }
@@ -116,7 +129,7 @@ namespace GUI_Management_of_medical_clinic
 
             if (dataGridViewUsers.SelectedRows.Count != 1)
             {
-                MessageBox.Show("Select one user from list!");
+                MessageBox.Show("You can reactivate only one user at a time. Please select one user from the list.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -127,8 +140,7 @@ namespace GUI_Management_of_medical_clinic
                 return;
             }
 
-            int IdUser = (int)dataGridViewUsers.Rows[rowIndex].Cells[0].Value;
-            UserModel user = UserService.GetUserById(IdUser);
+            UserModel user = UserService.GetUserByUsername(dataGridViewUsers.CurrentRow.Cells[0].Value.ToString());
             FormChangeStatusOfUser deactivate = new FormChangeStatusOfUser(user, currentUser);
             deactivate.ShowDialog();
 

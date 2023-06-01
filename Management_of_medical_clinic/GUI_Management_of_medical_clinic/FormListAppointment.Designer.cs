@@ -31,6 +31,8 @@
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             buttonClearFilter = new Button();
             panel1 = new Panel();
+            buttonRescheduleAppointment = new Button();
+            button_Clear = new Button();
             buttonRemove = new Button();
             buttonShowDetails = new Button();
             buttonExit = new Button();
@@ -41,6 +43,7 @@
             ColumnDoctor = new DataGridViewTextBoxColumn();
             ColumnSpecialization = new DataGridViewTextBoxColumn();
             ColumnDate = new DataGridViewTextBoxColumn();
+            ColumnHour = new DataGridViewTextBoxColumn();
             ColumnOffice = new DataGridViewTextBoxColumn();
             ColumnCost = new DataGridViewTextBoxColumn();
             panel2 = new Panel();
@@ -77,6 +80,8 @@
             // panel1
             // 
             panel1.BackColor = Color.SteelBlue;
+            panel1.Controls.Add(buttonRescheduleAppointment);
+            panel1.Controls.Add(button_Clear);
             panel1.Controls.Add(buttonRemove);
             panel1.Controls.Add(buttonShowDetails);
             panel1.Controls.Add(buttonExit);
@@ -86,6 +91,36 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(357, 1080);
             panel1.TabIndex = 29;
+            // 
+            // buttonRescheduleAppointment
+            // 
+            buttonRescheduleAppointment.BackColor = Color.SteelBlue;
+            buttonRescheduleAppointment.FlatAppearance.BorderColor = Color.Black;
+            buttonRescheduleAppointment.FlatStyle = FlatStyle.Flat;
+            buttonRescheduleAppointment.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            buttonRescheduleAppointment.Location = new Point(-2, 493);
+            buttonRescheduleAppointment.Margin = new Padding(3, 4, 3, 4);
+            buttonRescheduleAppointment.Name = "buttonRescheduleAppointment";
+            buttonRescheduleAppointment.Size = new Size(360, 65);
+            buttonRescheduleAppointment.TabIndex = 50;
+            buttonRescheduleAppointment.Text = "Reschedule appointment";
+            buttonRescheduleAppointment.UseVisualStyleBackColor = false;
+            buttonRescheduleAppointment.Click += buttonRescheduleAppointment_Click;
+            // 
+            // button_Clear
+            // 
+            button_Clear.BackColor = Color.SteelBlue;
+            button_Clear.FlatAppearance.BorderColor = Color.Black;
+            button_Clear.FlatStyle = FlatStyle.Flat;
+            button_Clear.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            button_Clear.Location = new Point(-1, 419);
+            button_Clear.Margin = new Padding(3, 4, 3, 4);
+            button_Clear.Name = "button_Clear";
+            button_Clear.Size = new Size(360, 65);
+            button_Clear.TabIndex = 49;
+            button_Clear.Text = "Clear the calendars";
+            button_Clear.UseVisualStyleBackColor = false;
+            button_Clear.Click += button_Clear_Click;
             // 
             // buttonRemove
             // 
@@ -158,7 +193,7 @@
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dataGridViewAppointmentList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dataGridViewAppointmentList.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewAppointmentList.Columns.AddRange(new DataGridViewColumn[] { ColumnPatient, ColumnPESEL, ColumnDoctor, ColumnSpecialization, ColumnDate, ColumnOffice, ColumnCost });
+            dataGridViewAppointmentList.Columns.AddRange(new DataGridViewColumn[] { ColumnPatient, ColumnPESEL, ColumnDoctor, ColumnSpecialization, ColumnDate, ColumnHour, ColumnOffice, ColumnCost });
             dataGridViewAppointmentList.Location = new Point(357, 84);
             dataGridViewAppointmentList.MultiSelect = false;
             dataGridViewAppointmentList.Name = "dataGridViewAppointmentList";
@@ -199,6 +234,12 @@
             ColumnDate.HeaderText = "Date";
             ColumnDate.Name = "ColumnDate";
             ColumnDate.ReadOnly = true;
+            // 
+            // ColumnHour
+            // 
+            ColumnHour.HeaderText = "Hour";
+            ColumnHour.Name = "ColumnHour";
+            ColumnHour.ReadOnly = true;
             // 
             // ColumnOffice
             // 
@@ -398,13 +439,6 @@
         private Button buttonShowDetails;
         private Button buttonRemove;
         private Button buttonViewAppointments;
-        private DataGridViewTextBoxColumn ColumnPatient;
-        private DataGridViewTextBoxColumn ColumnPESEL;
-        private DataGridViewTextBoxColumn ColumnDoctor;
-        private DataGridViewTextBoxColumn ColumnSpecialization;
-        private DataGridViewTextBoxColumn ColumnDate;
-        private DataGridViewTextBoxColumn ColumnOffice;
-        private DataGridViewTextBoxColumn ColumnCost;
         private TextBox textBoxLastName;
         private TextBox textBoxName;
         private DateTimePicker dateTimePickerDateOfVisit;
@@ -420,5 +454,15 @@
         private Label label1;
         private CheckBox checkBoxDateOfVisit;
         private CheckBox checkBoxName;
+        private Button button_Clear;
+        private Button buttonRescheduleAppointment;
+        private DataGridViewTextBoxColumn ColumnPatient;
+        private DataGridViewTextBoxColumn ColumnPESEL;
+        private DataGridViewTextBoxColumn ColumnDoctor;
+        private DataGridViewTextBoxColumn ColumnSpecialization;
+        private DataGridViewTextBoxColumn ColumnDate;
+        private DataGridViewTextBoxColumn ColumnHour;
+        private DataGridViewTextBoxColumn ColumnOffice;
+        private DataGridViewTextBoxColumn ColumnCost;
     }
 }

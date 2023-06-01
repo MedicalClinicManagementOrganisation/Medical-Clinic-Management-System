@@ -1,4 +1,5 @@
-﻿using Console_Management_of_medical_clinic.Model;
+﻿using Console_Management_of_medical_clinic.Logic;
+using Console_Management_of_medical_clinic.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -38,8 +39,9 @@ namespace GUI_Management_of_medical_clinic
 
         private void FormUserDetailsView_Load(object sender, EventArgs e)
         {
-            textBoxEmployeeId.Text = user.IdEmployee.ToString();
-            textBoxUserId.Text = user.IdUser.ToString();
+            EmployeeModel employee = EmployeeService.GetEmployeeByUserId(user);
+            textBoxFirstName.Text = employee.FirstName;
+            textBoxLastName.Text = employee.LastName;
             textBoxUsername.Text = user.Username;
             textBoxRole.Text = user.Role.ToString();
             textBoxActive.Text = user.IsActive ? "Active" : "Disactive";
