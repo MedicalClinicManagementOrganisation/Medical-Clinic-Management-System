@@ -191,7 +191,7 @@ namespace Console_Management_of_medical_clinic.Logic
 			}
 			catch (Microsoft.EntityFrameworkCore.DbUpdateException)
 			{
-				LastErrorMessage = "You can't remove this Calendar";
+				LastErrorMessage = "You can't remove this Calendar. Firstly remove connected appointments";
 				throw;
 			}
 
