@@ -93,7 +93,7 @@ namespace GUI_Management_of_medical_clinic
 
             }
 
-            if (textBox1_doctor.Text == string.Empty && comboBoxDoctorSpecialization.SelectedIndex == -1)
+            if (dataGridView_app_doctor.Columns.Count == 0)
             {
 
                 dataGridView_app_doctor.AutoGenerateColumns = false;
@@ -124,11 +124,16 @@ namespace GUI_Management_of_medical_clinic
         {
             List<Patient> patients = PatientService.GetPatientsData();
 
-            dataGridView_app_Patient.AutoGenerateColumns = false;
-            dataGridView_app_Patient.Columns.Add("PatientId", "ID");
-            dataGridView_app_Patient.Columns.Add("FirstName", "First Name");
-            dataGridView_app_Patient.Columns.Add("LastName", "Last Name");
-            dataGridView_app_Patient.Columns.Add("PESEL", "PESEL");
+
+            if (dataGridView_app_Patient.Columns.Count == 0)
+            {
+				dataGridView_app_Patient.AutoGenerateColumns = false;
+				dataGridView_app_Patient.Columns.Add("PatientId", "ID");
+				dataGridView_app_Patient.Columns.Add("FirstName", "First Name");
+				dataGridView_app_Patient.Columns.Add("LastName", "Last Name");
+				dataGridView_app_Patient.Columns.Add("PESEL", "PESEL");
+
+			}
 
             dataGridView_app_Patient.Columns["PatientId"].DataPropertyName = "PatientId";
             dataGridView_app_Patient.Columns["FirstName"].DataPropertyName = "FirstName";

@@ -1,6 +1,7 @@
 ﻿using Console_Management_of_medical_clinic.Data.Enums;
 using Console_Management_of_medical_clinic.Logic;
 using Console_Management_of_medical_clinic.Model;
+using System.Globalization;
 
 namespace GUI_Management_of_medical_clinic
 {
@@ -15,6 +16,12 @@ namespace GUI_Management_of_medical_clinic
         {
             this.currentUser = currentUser;
             InitializeComponent();
+            loadDataGridView();
+        }
+
+        public void loadDataGridView()
+        {
+            //dataGridViewCalendars.Rows.Clear();
             dataGridViewCalendars.DataSource = _calendarService.GetAll();
             dataGridViewCalendars.Columns["NumberOfDoctors"].HeaderText = "Number of doctors";
             dataGridViewCalendars.Columns["NumberOfAcceptedDoctors"].HeaderText = "Number of accepted doctors";
@@ -140,6 +147,31 @@ namespace GUI_Management_of_medical_clinic
                 FormMessage1.ShowDialog();
                 return;
             }
+        }
+
+        private void buttonActivate_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonActivateCalendar_Click(object sender, EventArgs e)
+        {
+            CalendarModel selectedCalendar = CalendarService.GetCalendarById((int)dataGridViewCalendars.CurrentRow.Cells[0].Value);
+            if (selectedCalendar.Active==true)
+            {
+                MessageBox.Show("Calendar is already active");
+                return;
+            }
+            
+
+            if (selectedCalendar.NumberOfAcceptedDoctors >= selectedCalendar.NumberOfDoctors)
+            {
+                CalendarService.ActivateCalendar(selectedCalendar.IdCalendar);
+                MessageBox.Show("Success, data is saved.");
+                loadDataGridView();
+                return;
+            }
+            MessageBox.Show("All doctors must approve their plans to activte calendar.");
         }
     }
 }

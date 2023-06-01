@@ -3,6 +3,7 @@ using Console_Management_of_medical_clinic.Data.Enums;
 using Console_Management_of_medical_clinic.Model;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,6 +60,11 @@ namespace Console_Management_of_medical_clinic.Logic
             return "Room: "+office.Number.ToString()+", "+office.Info;
         }
 
+        public static OfficeModel GetOfficeByInfo(string info)
+        {
+            return GetOfficesData().FirstOrDefault(office => ("Room: " + office.Number.ToString() + ", " + office.Info).Equals(info));
+        }
+
         public static void EditOffice(int idOffice, int number, EnumOfficeStatuses status, string info, int idSpecialization)
         {
             using (AppDbContext context = new AppDbContext())
@@ -90,7 +96,7 @@ namespace Console_Management_of_medical_clinic.Logic
             {
                 using (AppDbContext context = new AppDbContext())
                 {
-                    if (context.DbAppointments.Any(a => a.IdOffice == id))
+                    if (context.DbDoctorsDayPlan.Any(a => a.IdOffice == id))
                     {
                         return true;
                     }
@@ -132,5 +138,33 @@ namespace Console_Management_of_medical_clinic.Logic
             message = "";
             return true;
         }
+
+        public static bool CheckIfOfficeIsFreeForProvidedTerm(int employeeId, int idCalendar, int selectedDay, int idOffice, List<int> idOfTerms, out string message)
+        {
+            foreach (DoctorsDayPlanModel doctorsPlan in DoctorsPlanService.GetDoctorsPlanData())
+            {
+                if (doctorsPlan.IdCalendar == idCalendar && doctorsPlan.IdOffice == idOffice && doctorsPlan.IdDay == selectedDay)
+                {
+                    foreach (int idTerm in idOfTerms)
+                    {
+                        if (idTerm == doctorsPlan.IdOfTerm && !DoctorsPlanService.GetBookedTermsOfDoctorForCurrentDay(employeeId, selectedDay, idCalendar).Contains(idTerm))
+                        {
+                            message = "Office is busy at this term";
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            message = "";
+            return true;
+        }
+
+        public static List<OfficeModel> GetOfficesBySpecializationId(int specializationId)
+        {
+            return GetOfficesData().Where(office => office.IdSpecialization ==  specializationId).ToList();
+        }
     }
+
+    
 }

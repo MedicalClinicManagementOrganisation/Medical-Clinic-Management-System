@@ -1,98 +1,54 @@
-# Clinic staff's module
+# Doctor's portal handling module
 ## TODO List
 For now:
-- [ ] Unit Tests (Appointments)
-  - [ ] AppointmentService
-    - [ ] CanReschedule
-  - [ ] CalendarAppointmentService
-    - [ ] GetPatientDataByIdPatient
-    - [ ] GetAppointmentsWithPatients
-    - [ ] GetLastNameAndNameOfEmployeeByAppointment
-    - [ ] GetAppointmentsData
-    - [ ] appointmentInSelectedDate
-    - [ ] SortByDoctor
-    - [ ] SortByTerm
-  - [ ] CalendarService
-    - [ ] Filter
-    - [ ] Sort
-    - [ ] GetDateByIdCalendar
-    - [ ] GetIdFromDate
-- [ ] Improve forms
-- [ ] Improve analysis for appointments
+- [ ] The future calendar management
+  - [x] Future calendar viewing
+  - [x] Calendar acceptance
+  - [ ] Calendar modification
+  - [x] Terms rejection
+- [ ] Calendar management
+  - [x] Calendar viewing
+  - [x] View daily visits
+  - [ ] Sorting
+  - [ ] Filtering
+- [ ] Canceling an appointment
+  - [ ] Mass canceling from calendar
+  - [ ] Single cancelation from calendar's view
+  - [ ] Single cancelation from appointment's detail view
+
   
 Soon:
-- [ ] Rescheluding an appointment
-- [ ] Issuing a confirmation
-- [ ] Cleaning calendar from outdated and past visits
+- [ ] List of appointments
+  - [ ] View of appointments list
+  - [ ] Filtering 
+  - [ ] Sorting
+- [ ] Appointments management
+  - [ ] View appointment's details
+  - [ ] Adding results of appointment
+  - [ ] Registration of appointment
+  - [ ] List of appointments
+- [ ] Patients management
+  - [ ] View a patient visit history from a list of patients 
+  - [ ] View a patient visit history from the patient's details
 
 ---
 Done:
-- [x] View list of appointments
-  - [x] Forms
-  - [x] Filtering
-  - [x] Sorting
-- [x] Registering a new appointment
-  - [x] Forms
-  - [x] Validation
-- [x] Analysis
-  - [x] Analysis for visit registration and calendar view for clinic staff
-- [x] Functional tests for clinic staff module
-- [x] Appointment details
-- [x] Cancelling an appointment
-- [X] Help Administratior module team with their stuff
-- [X] Solve problems and repair mistakes with validation logic
-- [x] Functional Tests (Patient management)
-  - [x] Test scenarios
-  - [x] Test cases
-- [x] Refactor Patient class
-- [x] Improve View form
-- [x] Improve Login form
-- [x] Check out merge-branch
-- [x] Unit Tests (Patient management)
-  - [x] Patient class
-    - [x] ChangePatientStatus
-    - [x] FindPatient
-    - [x] RemovePatient
-    - [x] AddPatient
-    - [X] More...
-  - [x] PatientService class
-    - [x] GetPatientData
-    - [x] IsValidName
-    - [x] IsValidDate
-    - [x] IsValidPESEL
-    - [X] More..
-- [x] Forms (Patient management)
-  - [x] View patients' list form
-    - [x] View
-    - [x] Filter
-    - [x] Sort
-  - [x] Add patient form
-  - [x] Edit patient form
-  - [x] Remove patient form
-- [x] Update Database Model (Patient management)
-- [x] Analysis
-  - [x] Diagrams
-  - [x] Use Case descriptions
-- [x] Patient class
-- [x] Modification of EF Core Model
-- [x] More...
+- [X] 
 
 
 ## About
 
-Module for medical clinic staff.
+Doctor's portal handling
 
-Medical clinic personnel responsible for registration patients and doctor appointments use tool described in this chapter.
+This module is responsible for doctors' activities.
 
 System supports following processes:
-- Managements of clinic patients and their data
-- Management of doctor appointments
+- Doctors' visits in chosen day
+- Doctors' work schedule in chosen month
   
-List of actors using he system:
-- Clinic registration office staff
+List of actors using the system:
+- Doctor
 
 Privileges:
-- Access to patient management module - this right allows access to the patient management module (the module is available to users with this right) and the realization of all functionalities of this module
-- Access to patient visits management module - this right allows access to the patient visits management module (the module is available to users with this right) and the realization of all functionalities of this module
-
-An employee who acts as an employee of the Clinic's registration office must have at least one of the above-mentioned Permissions  
+[]
+ 

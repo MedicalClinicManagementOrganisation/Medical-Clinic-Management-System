@@ -60,9 +60,11 @@ namespace GUI_Management_of_medical_clinic
             button2.Visible = false;
             button3.Visible = false;
 
-            buttonCreateCalendar.Text = "Edit Calendar";
+            buttonCreateCalendar.Text = "Edit selected doctors plan";
+            buttonCreateCalendar.Enabled = true;
             buttonCreateCalendar.Click -= createCalendarButton_Click;
-            buttonCreateCalendar.Click += editCalendar_Click;
+            buttonCreateCalendar.Click += buttonEditPlan_Click;
+            //buttonCreateCalendar.Click += editCalendar_Click;
 
         }
 
@@ -92,7 +94,6 @@ namespace GUI_Management_of_medical_clinic
                         EmployeeService.GetEmployeeInfoById((int)plan.IdEmployee),
                         OfficeService.GetOfficeInfoById((int)plan.IdOffice),
                         DoctorsPlanService.GetTermDescription((EnumTerms)plan.IdOfTerm),
-                        PatientService.GetPatientInfoById((int)(plan.PatientId == null ? 0 : plan.PatientId)),
                         DoctorsPlanService.GetStatusInfo((EnumAppointmentStatus)plan.Status)
                         );
                 });
@@ -128,7 +129,6 @@ namespace GUI_Management_of_medical_clinic
             dataGridViewAppointments.Columns.Add("Doctor", "Doctor");
             dataGridViewAppointments.Columns.Add("Office", "Office");
             dataGridViewAppointments.Columns.Add("Hour", "Hour");
-            dataGridViewAppointments.Columns.Add("Patient", "Patient");
             dataGridViewAppointments.Columns.Add("Status", "Status");
         }
 
@@ -312,7 +312,6 @@ namespace GUI_Management_of_medical_clinic
             }
         }
 
-        
 
         public static int ExtractIdFromDataGridView(string input)
         {
@@ -339,10 +338,19 @@ namespace GUI_Management_of_medical_clinic
             {
                 if (CalendarService.checkIfCalendarExists(_selectedDate) == true)
                 {
-                    FormDoctorsDayPlanAdd formAppointmentAdd = new FormDoctorsDayPlanAdd(DateTime.Parse(labelDate.Text), currentEmployee);
-                    //this.Hide();
-                    formAppointmentAdd.ShowDialog();
-                    //this.Close();
+                    if (CalendarService.GetCalendarById(CalendarService.GetCalendarIdByDate(displayMonth.ToString("d"))).Active)
+                    {
+                        MessageBox.Show("It is not possible to change active calendars. Check if the selected calendar is right.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    FormDoctorsDayPlanEdit formDoctorsEdit = new FormDoctorsDayPlanEdit(DateTime.Parse(labelDate.Text), currentEmployee);
+                    formDoctorsEdit.ShowDialog();
+
+                    //FormDoctorsDayPlanAdd formAppointmentAdd = new FormDoctorsDayPlanAdd(DateTime.Parse(labelDate.Text), currentEmployee);
+                    ////this.Hide();
+                    //formAppointmentAdd.ShowDialog();
+                    ////this.Close();
                 }
                 else
                 {
@@ -409,19 +417,6 @@ namespace GUI_Management_of_medical_clinic
 
         }
 
-        private void editCalendar_Click(object sender, EventArgs e)
-        {
-            if (CalendarService.GetCalendarById(CalendarService.GetCalendarIdByDate(displayMonth.ToString("d"))).Active)
-            {
-                MessageBox.Show("It is not possible to change active calendars. Check if the selected calendar is right.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            FormCalendarEdit formCalendarEdit = new FormCalendarEdit(currentEmployee, CalendarService.GetCalendarById(CalendarService.GetCalendarIdByDate(displayMonth.ToString("d"))), new FormDoctorsPlanCalendar(currentEmployee, CalendarService.GetCalendarIdByDate(displayMonth.ToString("d"))));
-            formCalendarEdit.ShowDialog();
-            Close();
-        }
-
         private void CheckTheMonth()
         {
             if (displayMonth.Month == currentMonth.Month)
@@ -433,7 +428,7 @@ namespace GUI_Management_of_medical_clinic
             previousMonth = false;
         }
 
-        
+
 
         private bool CheckTheHoliday(DateTime date)
         {
@@ -457,33 +452,37 @@ namespace GUI_Management_of_medical_clinic
 
         private void buttonEditPlan_Click(object sender, EventArgs e)
         {
-            string selectedDoctor = null;
 
             if (dataGridViewAppointments.RowCount > 0)
             {
-                if (dataGridViewAppointments.CurrentRow != null && dataGridViewAppointments.CurrentRow.Cells[0].Value != null)
+                if (dataGridViewAppointments.CurrentRow != null)
                 {
-                    selectedDoctor = dataGridViewAppointments.CurrentRow.Cells[0].Value.ToString();
-                }
-            }
+                    int selectedDoctorId = EmployeeService.GetEmployeeByFullName(dataGridViewAppointments.CurrentRow.Cells[0].Value.ToString()).IdEmployee;
+                    int selectedOfficeId = OfficeService.GetOfficeByInfo(dataGridViewAppointments.CurrentRow.Cells[1].Value.ToString()).IdOffice;
+                    int selectedTermId = (int)DoctorsPlanService.GetTermByDescription(dataGridViewAppointments.CurrentRow.Cells[2].Value.ToString());
 
-            if (!string.IsNullOrEmpty(selectedDoctor))
-            {
-                int selectedDoctorId = ExtractIdFromDataGridView(selectedDoctor);
+                    string[] dateParts = _selectedDate.Split(".");
 
-                if (_selectedDate.Length != 0 && CalendarService.checkIfCalendarExists(_selectedDate) == true)
-                {
-                    FormDoctorsDayPlanEdit formAppointmentEdit = new FormDoctorsDayPlanEdit(DateTime.Parse(labelDate.Text), currentEmployee, selectedDoctorId);
-                    formAppointmentEdit.ShowDialog();
+                    DoctorsDayPlanModel plan = DoctorsPlanService.GetPlanByDayDoctorOfficeAndTermId(CalendarService.GetCalendarIdByDate(displayMonth.ToString("d")), new DateTime(int.Parse(dateParts[2]), int.Parse(dateParts[1]), int.Parse(dateParts[0])), selectedDoctorId, selectedOfficeId, selectedTermId);
+
+                    if (_selectedDate.Length != 0 && CalendarService.checkIfCalendarExists(_selectedDate))
+                    {
+                        FormDoctorsDayPlanEdit formAppointmentEdit = new FormDoctorsDayPlanEdit(DateTime.Parse(labelDate.Text), currentEmployee, plan);
+                        formAppointmentEdit.ShowDialog();
+                    }
+                    else
+                    {
+                        MessageBox.Show("A calendar hasn't been started for the given month");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("A calendar hasn't been started for the given month");
+                    MessageBox.Show("Select the plan from the list.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
             else
             {
-                MessageBox.Show("Please select a doctor.");
+                MessageBox.Show("There is no plans for the current day, nothing to edit.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }

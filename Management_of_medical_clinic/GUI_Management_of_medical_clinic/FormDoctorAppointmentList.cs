@@ -53,7 +53,7 @@ namespace GUI_Management_of_medical_clinic
             dataGridViewAppointmentList.Rows.Clear();
             foreach (DoctorsDayPlanModel appointment in appointments)
             {
-                int index = dataGridViewAppointmentList.Rows.Add(appointment.appointmentDoctorData);
+                int index = dataGridViewAppointmentList.Rows.Add(appointment.appointmentData);
                 dataGridViewAppointmentList.Rows[index].Tag = appointment;
             }
         }

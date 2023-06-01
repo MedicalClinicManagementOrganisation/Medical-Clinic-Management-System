@@ -4,6 +4,7 @@ using Console_Management_of_medical_clinic.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -165,9 +166,32 @@ namespace Console_Management_of_medical_clinic.Logic
             }
         }
 
+        public static EnumTerms GetTermByDescription(string description)
+        {
+            EnumTerms term = new EnumTerms();
+
+            foreach (var enumValue in Enum.GetValues(typeof(EnumTerms)))
+            {
+                var fieldInfo = typeof(EnumTerms).GetField(enumValue.ToString());
+                var attribute = fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false)[0] as DescriptionAttribute;
+
+                if (attribute != null && attribute.Description.Equals(description))
+                {
+                    term = (EnumTerms)enumValue;
+                }
+            }
+
+            return term;
+
+        }
+
         public static string GetStatusInfo(Enum value)
         {
-            return value.ToString();
+            if (value.ToString()=="Inactive" || value.ToString() == "New")
+            {
+                return "Not accepted";
+            }
+            return "Accepted";
         }
 
         public static int CheckIfDoctorHasPlanForCurrentDay(int idEmployee, int idDay, int idCalendar)
@@ -220,6 +244,14 @@ namespace Console_Management_of_medical_clinic.Logic
             using (AppDbContext context = new AppDbContext())
             {
                 return context.DbDoctorsDayPlan.Where(plan => plan.IdCalendar == calendarId).ToList();
+            }
+        }
+
+        public static DoctorsDayPlanModel GetPlanByDayDoctorOfficeAndTermId(int calendarId, DateTime selectedDate, int employeeId, int officeId, int termId)
+        {
+            using (AppDbContext context = new AppDbContext()) 
+            {
+                return CheckPlansAndReturnForADay(selectedDate, calendarId).FirstOrDefault(plan => plan.IdEmployee == employeeId && plan.IdOffice == officeId && plan.IdOfTerm == termId);
             }
         }
 

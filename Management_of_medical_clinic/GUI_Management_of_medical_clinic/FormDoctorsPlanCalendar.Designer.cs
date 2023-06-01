@@ -59,7 +59,6 @@
             label4 = new Label();
             panel8 = new Panel();
             label5 = new Label();
-            buttonEditPlan = new Button();
             panelMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewAppointments).BeginInit();
@@ -111,6 +110,7 @@
             // 
             // buttonCreateCalendar
             // 
+            buttonCreateCalendar.AccessibleRole = AccessibleRole.Clock;
             buttonCreateCalendar.BackColor = Color.SteelBlue;
             buttonCreateCalendar.Font = new Font("Segoe UI", 20.25F, FontStyle.Regular, GraphicsUnit.Point);
             buttonCreateCalendar.ForeColor = SystemColors.ControlLightLight;
@@ -155,6 +155,7 @@
             // 
             dataGridViewAppointments.AllowUserToAddRows = false;
             dataGridViewAppointments.AllowUserToDeleteRows = false;
+            dataGridViewAppointments.AllowUserToOrderColumns = true;
             dataGridViewAppointments.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewAppointments.BackgroundColor = SystemColors.Info;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
@@ -168,15 +169,13 @@
             dataGridViewAppointments.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
             dataGridViewCellStyle2.SelectionBackColor = SystemColors.ControlLightLight;
             dataGridViewCellStyle2.SelectionForeColor = SystemColors.Desktop;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
             dataGridViewAppointments.DefaultCellStyle = dataGridViewCellStyle2;
-            dataGridViewAppointments.Enabled = false;
             dataGridViewAppointments.Location = new Point(1104, 173);
-            dataGridViewAppointments.MultiSelect = false;
             dataGridViewAppointments.Name = "dataGridViewAppointments";
             dataGridViewAppointments.ReadOnly = true;
             dataGridViewAppointments.RowHeadersVisible = false;
@@ -437,19 +436,11 @@
             label5.Text = "Sat";
             label5.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // buttonEditPlan
-            // 
-            buttonEditPlan.Location = new Point(0, 0);
-            buttonEditPlan.Name = "buttonEditPlan";
-            buttonEditPlan.Size = new Size(75, 23);
-            buttonEditPlan.TabIndex = 0;
-            // 
             // FormDoctorsPlanCalendar
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1920, 1080);
-            Controls.Add(buttonEditPlan);
             Controls.Add(panel2);
             Controls.Add(panel3);
             Controls.Add(panel4);
@@ -521,7 +512,6 @@
         private Label label5;
         private PictureBox pictureBox1;
         private Button buttonExit;
-        private Button buttonEditPlan;
         private Label labelCalendarExists;
     }
 }

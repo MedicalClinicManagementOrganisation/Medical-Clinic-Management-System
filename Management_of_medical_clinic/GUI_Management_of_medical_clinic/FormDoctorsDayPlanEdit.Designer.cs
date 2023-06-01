@@ -76,7 +76,7 @@
             buttonAdd.TabIndex = 14;
             buttonAdd.Text = "Edit";
             buttonAdd.UseVisualStyleBackColor = false;
-            buttonAdd.Click += buttonAdd_Click;
+            buttonAdd.Click += buttonEdit_Click;
             // 
             // panel1
             // 
@@ -139,7 +139,6 @@
             comboBoxOffice.Name = "comboBoxOffice";
             comboBoxOffice.Size = new Size(218, 23);
             comboBoxOffice.TabIndex = 47;
-            comboBoxOffice.SelectedIndexChanged += comboBoxOffice_SelectedIndexChanged;
             // 
             // labelDay
             // 
