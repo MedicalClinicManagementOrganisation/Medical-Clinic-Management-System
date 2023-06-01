@@ -3,6 +3,7 @@ using Console_Management_of_medical_clinic.Data.Enums;
 using Console_Management_of_medical_clinic.Logic;
 using Console_Management_of_medical_clinic.Model;
 using iText.Commons.Actions.Contexts;
+using iText.Layout.Splitting;
 using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Utilities.Encoders;
 using System;
@@ -235,7 +236,12 @@ namespace GUI_Management_of_medical_clinic
                 MessageBox.Show("Choose appointment to cancel", "Information", MessageBoxButtons.OK);
             }
 
-            DoctorsDayPlanModel appointment = (DoctorsDayPlanModel)dataGridViewAppointmentList.SelectedRows[0].Tag;
+            if (dataGridViewAppointmentList.SelectedRows[0].Tag == null)
+            {
+                return;
+            }
+
+            DoctorsDayPlanModel? appointment = (DoctorsDayPlanModel)dataGridViewAppointmentList.SelectedRows[0].Tag!;
 
             DateTime date = CalendarService.GetDateByIdCalendar((int)appointment.IdCalendar, appointment.IdDay);
             string term = AppointmentService.GetTermByTermId((int)appointment.IdOfTerm);
